@@ -2,1377 +2,1263 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0f1117">
 <title>Sofia Ready — Learn Bulgarian</title>
 <style>
 :root {
   --bg: #0f1117;
-  --surface: #1a1d27;
-  --card: #22263a;
-  --border: #2e3350;
-  --accent: #4f7cff;
+  --surface: #181b26;
+  --card: #1e2235;
+  --border: #2a2f4a;
+  --accent: #4f8cff;
   --accent2: #7c4fff;
   --green: #22c55e;
   --red: #ef4444;
-  --yellow: #f59e0b;
-  --text: #e8eaf6;
+  --amber: #f59e0b;
+  --ph-color: #fb923c;
+  --text: #eaecf8;
   --text2: #9ba3c9;
-  --text3: #6370a0;
+  --text3: #5a6390;
   --radius: 16px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow: 0 4px 24px rgba(0,0,0,0.45);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;font-size:16px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-/* ── Layout ── */
-#app { min-height: 100vh; display: flex; flex-direction: column; }
-.screen { display: none; flex-direction: column; min-height: 100vh; }
-.screen.active { display: flex; }
+/* ── Screens ── */
+#app{min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
 
 /* ── Nav ── */
-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 100;
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;min-height:54px
 }
-.nav-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
-.nav-back { background: none; border: none; color: var(--accent); font-size: 1rem; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
-.nav-back:hover { background: rgba(79,124,255,0.12); }
+.nav-title{font-size:1rem;font-weight:700;color:var(--text);flex:1;text-align:center;padding:0 8px}
+.nav-back{
+  background:none;border:none;color:var(--accent);font-size:1rem;
+  cursor:pointer;padding:8px 12px;border-radius:10px;min-width:48px;min-height:48px;
+  display:flex;align-items:center;justify-content:center
+}
+.nav-back:active{background:rgba(79,140,255,.15)}
+.nav-spacer{min-width:60px}
 
-/* ── Home Screen ── */
-.home-header {
-  background: linear-gradient(135deg, #1a1d27 0%, #12162a 100%);
-  padding: 48px 24px 40px; text-align: center;
-  border-bottom: 1px solid var(--border);
+/* ── Home ── */
+.home-header{
+  background:linear-gradient(160deg,#181b26 0%,#12162a 100%);
+  padding:40px 20px 32px;text-align:center;border-bottom:1px solid var(--border)
 }
-.flag { font-size: 4rem; margin-bottom: 12px; }
-.home-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-.home-title span { color: var(--accent); }
-.home-sub { color: var(--text2); font-size: 1rem; line-height: 1.6; max-width: 400px; margin: 0 auto; }
+.flag{font-size:3.6rem;margin-bottom:10px;line-height:1}
+.home-title{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.home-title span{color:var(--accent)}
+.home-sub{color:var(--text2);font-size:.95rem;line-height:1.6;max-width:360px;margin:0 auto}
 
-.progress-summary {
-  margin: 24px; padding: 20px; background: var(--card);
-  border-radius: var(--radius); border: 1px solid var(--border);
+/* ── Voice pill ── */
+.voice-pill{
+  display:flex;align-items:center;gap:8px;margin:14px 16px 0;
+  padding:10px 14px;background:var(--card);border:1px solid var(--border);
+  border-radius:10px;font-size:.82rem;color:var(--text2)
 }
-.progress-summary h3 { font-size: 0.85rem; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
-.progress-bar-outer { background: var(--border); border-radius: 99px; height: 8px; margin-bottom: 8px; }
-.progress-bar-inner { height: 8px; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.5s; }
-.progress-label { color: var(--text2); font-size: 0.9rem; }
-.progress-label span { color: var(--accent); font-weight: 700; }
+.voice-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.voice-dot.warn{background:var(--amber)}
 
-.modules-grid { display: flex; flex-direction: column; gap: 12px; padding: 0 20px 24px; }
-.module-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 18px 20px;
-  cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 16px;
+/* ── Progress card ── */
+.progress-card{
+  margin:12px 16px 0;padding:16px 18px;background:var(--card);
+  border:1px solid var(--border);border-radius:var(--radius)
 }
-.module-card:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow); }
-.module-icon { font-size: 2.2rem; flex-shrink: 0; width: 52px; text-align: center; }
-.module-info { flex: 1; min-width: 0; }
-.module-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
-.module-desc { color: var(--text2); font-size: 0.9rem; line-height: 1.4; }
-.module-count { color: var(--text3); font-size: 0.8rem; margin-top: 4px; }
-.module-progress { font-size: 0.8rem; color: var(--green); font-weight: 600; flex-shrink: 0; }
+.progress-card h3{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.pb-outer{background:var(--border);border-radius:99px;height:7px;margin-bottom:8px}
+.pb-inner{height:7px;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s}
+.pb-label{color:var(--text2);font-size:.88rem}
+.pb-label span{color:var(--accent);font-weight:700}
 
-/* ── Module Screen ── */
-.mode-tabs { display: flex; gap: 8px; padding: 16px 20px; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; }
-.tab-btn {
-  padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
-  background: none; color: var(--text2); font-size: 0.9rem; cursor: pointer;
-  white-space: nowrap; transition: all 0.15s; flex-shrink: 0;
+/* ── Module grid ── */
+.modules-grid{display:flex;flex-direction:column;gap:10px;padding:14px 16px 32px}
+.module-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;
+  transition:border-color .15s,transform .15s;text-decoration:none;color:inherit
 }
-.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
-.tab-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+.module-card:active{transform:scale(.98);border-color:var(--accent)}
+.module-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center;line-height:1}
+.module-info{flex:1;min-width:0}
+.module-name{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.module-desc{color:var(--text2);font-size:.85rem;line-height:1.4;white-space:normal;word-break:break-word}
+.module-count{color:var(--text3);font-size:.78rem;margin-top:4px}
 
-.mode-content { flex: 1; overflow-y: auto; padding: 20px; }
+/* ── Tab bar ── */
+.tabs{
+  display:flex;gap:6px;padding:12px 16px;background:var(--surface);
+  border-bottom:1px solid var(--border);overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  padding:8px 16px;border-radius:20px;border:1px solid var(--border);
+  background:none;color:var(--text2);font-size:.88rem;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;min-height:40px;transition:all .15s
+}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.tab:active:not(.active){background:rgba(79,140,255,.1)}
 
-/* ── Phrase List ── */
-.phrase-list { display: flex; flex-direction: column; gap: 12px; }
-.phrase-item {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 18px 20px;
-  display: flex; align-items: flex-start; gap: 14px;
+/* ── Content area ── */
+.content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch}
+
+/* ── Category label ── */
+.cat-label{
+  font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--text3);padding:16px 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px
 }
-.phrase-item:hover { border-color: var(--border); }
-.phrase-text-col { flex: 1; min-width: 0; }
-.phrase-cyrillic { font-size: 1.5rem; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
-.phrase-translit { font-size: 1rem; color: var(--accent); font-style: italic; margin-bottom: 6px; }
-.phrase-english { font-size: 0.95rem; color: var(--text2); margin-bottom: 6px; }
-.phrase-usage { font-size: 0.82rem; color: var(--text3); background: rgba(255,255,255,0.04); padding: 6px 10px; border-radius: 8px; line-height: 1.4; }
-.play-btn {
-  background: var(--accent); border: none; color: #fff;
-  width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem;
-  cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s; box-shadow: 0 2px 8px rgba(79,124,255,0.4);
+.cat-label:first-child{padding-top:4px}
+
+/* ── Phrase card ── */
+.phrase-list{display:flex;flex-direction:column;gap:10px}
+.phrase-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;display:flex;gap:12px;align-items:flex-start
 }
-.play-btn:hover { transform: scale(1.1); box-shadow: 0 4px 16px rgba(79,124,255,0.5); }
-.play-btn:active { transform: scale(0.95); }
-.play-btn.playing { background: var(--accent2); animation: pulse 0.8s infinite; }
-@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(124,79,255,0.4)} 50%{box-shadow:0 0 0 8px rgba(124,79,255,0)} }
+.phrase-texts{flex:1;min-width:0}
+.p-en{
+  font-size:1rem;font-weight:700;color:var(--text);
+  line-height:1.35;word-break:break-word;margin-bottom:6px
+}
+.p-bg{
+  font-size:1.45rem;font-weight:800;color:var(--text);
+  line-height:1.3;word-break:break-word;margin-bottom:4px
+}
+.p-tr{font-size:.92rem;color:var(--accent);font-style:italic;margin-bottom:4px;word-break:break-word}
+.p-ph{
+  font-size:.88rem;color:var(--ph-color);font-weight:600;margin-bottom:6px;word-break:break-word
+}
+.p-ph::before{content:'🔊 '}
+.p-usage{
+  font-size:.8rem;color:var(--text3);background:rgba(255,255,255,.04);
+  padding:6px 10px;border-radius:8px;line-height:1.45;word-break:break-word;margin-top:4px
+}
+.p-usage::before{content:'💡 '}
+
+/* ── Play button ── */
+.play-btn{
+  background:var(--accent);border:none;color:#fff;
+  width:48px;height:48px;border-radius:50%;font-size:1.1rem;
+  cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(79,140,255,.4);transition:all .15s;margin-top:2px
+}
+.play-btn:active{transform:scale(.92);box-shadow:0 1px 4px rgba(79,140,255,.3)}
+.play-btn.playing{background:var(--accent2);animation:pulse .9s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,79,255,.4)}50%{box-shadow:0 0 0 8px rgba(124,79,255,0)}}
+
+/* ── Pronunciation guide legend ── */
+.ph-legend{
+  background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);
+  border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:.84rem;line-height:1.7;color:var(--text2)
+}
+.ph-legend strong{color:var(--ph-color)}
+.ph-legend h4{color:var(--ph-color);font-size:.85rem;margin-bottom:8px}
+
+/* ── Info tip box ── */
+.tip-box{
+  background:rgba(79,140,255,.08);border:1px solid rgba(79,140,255,.2);
+  border-radius:12px;padding:14px 16px;margin-bottom:14px;
+  font-size:.87rem;color:var(--text2);line-height:1.6
+}
+.tip-box strong{color:var(--accent)}
 
 /* ── Flashcard ── */
-.flashcard-container { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; }
-.flashcard-counter { color: var(--text3); font-size: 0.9rem; }
-.flashcard {
-  width: 100%; max-width: 480px; min-height: 280px;
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 20px; padding: 32px 28px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; cursor: pointer; transition: all 0.15s;
-  box-shadow: var(--shadow); position: relative;
+.fc-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:4px 0 24px}
+.fc-counter{color:var(--text3);font-size:.88rem}
+.fc{
+  width:100%;max-width:480px;min-height:260px;
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:28px 24px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;cursor:pointer;
+  box-shadow:var(--shadow);position:relative;transition:transform .12s
 }
-.flashcard:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-.flashcard-hint { font-size: 0.8rem; color: var(--text3); position: absolute; top: 16px; right: 16px; }
-.card-cyrillic { font-size: 2.4rem; font-weight: 800; color: var(--text); margin-bottom: 12px; line-height: 1.2; }
-.card-translit { font-size: 1.2rem; color: var(--accent); font-style: italic; margin-bottom: 8px; }
-.card-english { font-size: 1.1rem; color: var(--text2); margin-bottom: 16px; }
-.card-usage { font-size: 0.85rem; color: var(--text3); line-height: 1.5; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; width: 100%; }
-.card-back { display: none; }
-.flashcard.flipped .card-front { display: none; }
-.flashcard.flipped .card-back { display: block; width: 100%; }
+.fc:active{transform:scale(.98)}
+.fc-hint{position:absolute;top:12px;right:14px;font-size:.75rem;color:var(--text3)}
+.fc-en{font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.3}
+.fc-bg{font-size:2.1rem;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:6px}
+.fc-tr{font-size:1rem;color:var(--accent);font-style:italic;margin-bottom:6px}
+.fc-ph{font-size:.95rem;color:var(--ph-color);font-weight:600;margin-bottom:8px}
+.fc-usage{font-size:.82rem;color:var(--text3);background:rgba(255,255,255,.04);padding:8px 12px;border-radius:8px;line-height:1.45;width:100%}
+.fc-back{display:none}
+.fc.flipped .fc-front{display:none}
+.fc.flipped .fc-back{display:block;width:100%}
+.fc-audio-row{display:flex;justify-content:center;margin-top:14px}
+.fc-audio-btn{
+  background:var(--accent);border:none;color:#fff;
+  padding:10px 24px;border-radius:20px;font-size:.92rem;
+  cursor:pointer;display:flex;align-items:center;gap:8px
+}
+.fc-audio-btn:active{background:var(--accent2)}
 
-.card-audio-row { display: flex; gap: 12px; margin-top: 16px; justify-content: center; }
-.card-play-btn {
-  background: var(--accent); border: none; color: #fff;
-  padding: 10px 24px; border-radius: 20px; font-size: 0.95rem;
-  cursor: pointer; display: flex; align-items: center; gap: 8px;
-  transition: all 0.15s;
+.fc-nav{display:flex;gap:10px;width:100%;max-width:480px}
+.fc-btn{
+  flex:1;padding:14px 8px;border-radius:12px;border:1px solid var(--border);
+  background:var(--card);color:var(--text);font-size:.92rem;
+  cursor:pointer;font-weight:600;min-height:50px;transition:all .15s
 }
-.card-play-btn:hover { background: var(--accent2); }
+.fc-btn:active{border-color:var(--accent);color:var(--accent)}
+.fc-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.fc-btn.primary:active{background:var(--accent2)}
 
-.flashcard-nav { display: flex; gap: 12px; width: 100%; max-width: 480px; }
-.fc-btn {
-  flex: 1; padding: 14px; border-radius: 12px; border: 1px solid var(--border);
-  background: var(--card); color: var(--text); font-size: 0.95rem;
-  cursor: pointer; transition: all 0.15s; font-weight: 600;
+.fc-rate{display:flex;gap:8px;width:100%;max-width:480px}
+.rate-btn{
+  flex:1;padding:12px 6px;border-radius:12px;border:none;
+  font-size:.88rem;font-weight:700;cursor:pointer;min-height:48px
 }
-.fc-btn:hover { border-color: var(--accent); color: var(--accent); }
-.fc-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.fc-btn.primary:hover { background: var(--accent2); border-color: var(--accent2); }
-
-.fc-rating { display: flex; gap: 10px; width: 100%; max-width: 480px; }
-.rate-btn {
-  flex: 1; padding: 12px 8px; border-radius: 12px; border: none;
-  font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
-}
-.rate-hard { background: rgba(239,68,68,0.2); color: var(--red); }
-.rate-hard:hover { background: var(--red); color: #fff; }
-.rate-ok { background: rgba(245,158,11,0.2); color: var(--yellow); }
-.rate-ok:hover { background: var(--yellow); color: #fff; }
-.rate-easy { background: rgba(34,197,94,0.2); color: var(--green); }
-.rate-easy:hover { background: var(--green); color: #fff; }
+.r-hard{background:rgba(239,68,68,.18);color:var(--red)}
+.r-hard:active{background:var(--red);color:#fff}
+.r-ok{background:rgba(245,158,11,.18);color:var(--amber)}
+.r-ok:active{background:var(--amber);color:#fff}
+.r-easy{background:rgba(34,197,94,.18);color:var(--green)}
+.r-easy:active{background:var(--green);color:#fff}
 
 /* ── Quiz ── */
-.quiz-container { display: flex; flex-direction: column; gap: 20px; max-width: 560px; margin: 0 auto; }
-.quiz-progress-row { display: flex; align-items: center; gap: 12px; }
-.quiz-progress-bar { flex: 1; height: 6px; background: var(--border); border-radius: 99px; }
-.quiz-progress-fill { height: 6px; border-radius: 99px; background: var(--accent); transition: width 0.4s; }
-.quiz-score { color: var(--text2); font-size: 0.9rem; white-space: nowrap; }
-
-.quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 28px 24px; }
-.quiz-question-label { font-size: 0.8rem; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
-.quiz-question { font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 8px; }
-.quiz-question.big { font-size: 2rem; }
-.quiz-sub { font-size: 1rem; color: var(--accent); font-style: italic; margin-bottom: 20px; }
-.quiz-audio-btn {
-  background: rgba(79,124,255,0.15); border: 1px solid var(--accent);
-  color: var(--accent); padding: 10px 20px; border-radius: 12px;
-  font-size: 0.95rem; cursor: pointer; margin-bottom: 20px;
-  display: inline-flex; align-items: center; gap: 8px;
+.quiz-wrap{display:flex;flex-direction:column;gap:16px;max-width:560px;margin:0 auto}
+.quiz-top{display:flex;align-items:center;gap:12px}
+.quiz-pb{flex:1;height:6px;background:var(--border);border-radius:99px}
+.quiz-pb-fill{height:6px;border-radius:99px;background:var(--accent);transition:width .4s}
+.quiz-score-lbl{color:var(--text2);font-size:.88rem;white-space:nowrap}
+.quiz-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px 20px}
+.q-type-lbl{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.q-en{font-size:1.25rem;font-weight:800;color:var(--text);line-height:1.35;margin-bottom:4px;word-break:break-word}
+.q-bg{font-size:2rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:6px}
+.q-tr{font-size:.95rem;color:var(--accent);font-style:italic;margin-bottom:4px}
+.q-ph{font-size:.88rem;color:var(--ph-color);font-weight:600;margin-bottom:16px}
+.q-audio-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(79,140,255,.12);border:1px solid var(--accent);
+  color:var(--accent);padding:10px 18px;border-radius:12px;font-size:.92rem;
+  cursor:pointer;margin-bottom:16px;min-height:48px
 }
-.quiz-options { display: flex; flex-direction: column; gap: 10px; }
-.opt-btn {
-  width: 100%; padding: 16px 20px; text-align: left;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 12px; color: var(--text); font-size: 1rem;
-  cursor: pointer; transition: all 0.15s; line-height: 1.4;
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.opt{
+  width:100%;padding:14px 18px;text-align:left;
+  background:var(--surface);border:1.5px solid var(--border);border-radius:12px;
+  color:var(--text);font-size:.95rem;cursor:pointer;line-height:1.4;
+  min-height:52px;word-break:break-word;transition:border-color .15s
 }
-.opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(79,124,255,0.08); }
-.opt-btn.correct { border-color: var(--green) !important; background: rgba(34,197,94,0.15) !important; color: var(--green); }
-.opt-btn.wrong { border-color: var(--red) !important; background: rgba(239,68,68,0.15) !important; color: var(--red); }
-.opt-btn:disabled { cursor: default; }
-
-.quiz-feedback { padding: 14px 18px; border-radius: 12px; font-size: 0.95rem; line-height: 1.5; margin-top: 8px; }
-.quiz-feedback.correct { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: var(--green); }
-.quiz-feedback.wrong { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #ff7b7b; }
-.quiz-next-btn {
-  width: 100%; padding: 14px; background: var(--accent); border: none;
-  color: #fff; border-radius: 12px; font-size: 1rem; font-weight: 700;
-  cursor: pointer; margin-top: 12px; transition: background 0.15s;
+.opt:active:not(:disabled){border-color:var(--accent)}
+.opt.correct{border-color:var(--green)!important;background:rgba(34,197,94,.14)!important;color:var(--green)!important}
+.opt.wrong{border-color:var(--red)!important;background:rgba(239,68,68,.14)!important;color:#ff8080!important}
+.opt:disabled{cursor:default}
+.quiz-fb{padding:12px 16px;border-radius:12px;font-size:.9rem;line-height:1.5;margin-top:6px;word-break:break-word}
+.quiz-fb.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.quiz-fb.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ff8888}
+.quiz-next{
+  width:100%;padding:14px;background:var(--accent);border:none;
+  color:#fff;border-radius:12px;font-size:.98rem;font-weight:700;
+  cursor:pointer;margin-top:10px;min-height:50px
 }
-.quiz-next-btn:hover { background: var(--accent2); }
-
-.quiz-complete { text-align: center; padding: 40px 20px; }
-.quiz-complete-emoji { font-size: 4rem; margin-bottom: 16px; }
-.quiz-complete h2 { font-size: 1.6rem; margin-bottom: 8px; }
-.quiz-complete p { color: var(--text2); font-size: 1rem; margin-bottom: 24px; }
-.quiz-complete-score { font-size: 3rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+.quiz-next:active{background:var(--accent2)}
+.quiz-done{text-align:center;padding:32px 16px}
+.quiz-done-emoji{font-size:3.5rem;margin-bottom:12px}
+.quiz-done-pct{font-size:3rem;font-weight:800;color:var(--accent);margin-bottom:6px}
+.quiz-done h2{font-size:1.4rem;margin-bottom:8px}
+.quiz-done p{color:var(--text2);font-size:.95rem;margin-bottom:20px;line-height:1.5}
 
 /* ── Alphabet ── */
-.alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-.letter-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px 12px; text-align: center; cursor: pointer;
-  transition: all 0.15s;
+.alpha-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.alpha-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:14px 10px;text-align:center;cursor:pointer;transition:border-color .15s
 }
-.letter-card:hover { border-color: var(--accent); transform: translateY(-1px); }
-.letter-bg { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.letter-sm { font-size: 1.3rem; color: var(--text2); margin-bottom: 6px; }
-.letter-sound { font-size: 0.85rem; color: var(--accent); font-style: italic; }
-.letter-example { font-size: 0.8rem; color: var(--text3); margin-top: 4px; }
-
-/* ── Dialogue ── */
-.dialogue-scenario { background: var(--card); border: 1px solid var(--border); border-radius: 20px; margin-bottom: 16px; overflow: hidden; }
-.dialogue-header { padding: 18px 20px; background: linear-gradient(135deg, rgba(79,124,255,0.15), rgba(124,79,255,0.1)); border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 12px; }
-.dialogue-icon { font-size: 1.8rem; }
-.dialogue-title { font-size: 1.05rem; font-weight: 700; }
-.dialogue-sub { font-size: 0.85rem; color: var(--text2); margin-top: 2px; }
-.dialogue-chevron { margin-left: auto; color: var(--text3); font-size: 1rem; transition: transform 0.2s; }
-.dialogue-scenario.open .dialogue-chevron { transform: rotate(180deg); }
-.dialogue-body { display: none; padding: 20px; }
-.dialogue-scenario.open .dialogue-body { display: block; }
-
-.dialogue-line { display: flex; gap: 12px; margin-bottom: 18px; }
-.dialogue-line.you { flex-direction: row-reverse; }
-.speaker-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-.dialogue-line .speaker-label { color: var(--text3); }
-.dialogue-line.you .speaker-label { color: var(--accent); text-align: right; }
-.dialogue-bubble {
-  max-width: 75%; padding: 14px 18px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; border-top-left-radius: 4px;
-}
-.dialogue-line.you .dialogue-bubble {
-  background: rgba(79,124,255,0.15); border-color: rgba(79,124,255,0.3);
-  border-radius: 16px; border-top-right-radius: 4px;
-}
-.bubble-cyrillic { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
-.bubble-translit { font-size: 0.9rem; color: var(--accent); font-style: italic; margin-bottom: 4px; }
-.bubble-english { font-size: 0.88rem; color: var(--text2); }
-.bubble-audio { background: none; border: none; color: var(--text3); font-size: 1rem; cursor: pointer; margin-top: 8px; display: flex; align-items: center; gap: 6px; font-size: 0.82rem; }
-.bubble-audio:hover { color: var(--accent); }
-
-.dialogue-play-all {
-  width: 100%; padding: 12px; background: rgba(79,124,255,0.1); border: 1px solid rgba(79,124,255,0.3);
-  border-radius: 12px; color: var(--accent); font-size: 0.95rem;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-  margin-bottom: 16px;
-}
-.dialogue-play-all:hover { background: rgba(79,124,255,0.2); }
+.alpha-card:active{border-color:var(--accent)}
+.alpha-big{font-size:2rem;font-weight:800;color:var(--text);margin-bottom:2px;line-height:1.2}
+.alpha-small{font-size:1.3rem;color:var(--text2);margin-bottom:6px}
+.alpha-sound{font-size:.82rem;color:var(--accent);font-style:italic;margin-bottom:2px}
+.alpha-ph{font-size:.78rem;color:var(--ph-color);font-weight:600;margin-bottom:4px}
+.alpha-ex{font-size:.75rem;color:var(--text3);line-height:1.3}
 
 /* ── Numbers ── */
-.numbers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-.num-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px; cursor: pointer;
-  transition: all 0.15s; display: flex; align-items: center; gap: 12px;
+.num-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:8px}
+.num-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:14px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:border-color .15s
 }
-.num-card:hover { border-color: var(--accent); }
-.num-arabic { font-size: 1.8rem; font-weight: 800; color: var(--accent); min-width: 40px; }
-.num-info .num-bg { font-size: 1.1rem; font-weight: 700; }
-.num-info .num-tr { font-size: 0.85rem; color: var(--accent); font-style: italic; }
+.num-card:active{border-color:var(--accent)}
+.num-n{font-size:1.7rem;font-weight:800;color:var(--accent);min-width:38px}
+.num-bg{font-size:1rem;font-weight:700;color:var(--text)}
+.num-tr{font-size:.82rem;color:var(--accent);font-style:italic}
+.num-ph{font-size:.78rem;color:var(--ph-color);font-weight:600}
 
-/* ── TTS Notice ── */
-.tts-notice { margin: 12px 20px; padding: 12px 16px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; font-size: 0.85rem; color: var(--yellow); display: none; }
-
-/* ── Voice indicator ── */
-.voice-status { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 0.82rem; color: var(--text3); background: var(--surface); border-bottom: 1px solid var(--border); }
-.voice-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-.voice-dot.warn { background: var(--yellow); }
-
-/* ── Section headers ── */
-.section-header { padding: 0 0 12px; }
-.section-title { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.section-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.5; }
-
-/* ── Responsive ── */
-@media (max-width: 480px) {
-  .home-title { font-size: 1.6rem; }
-  .card-cyrillic { font-size: 2rem; }
-  .phrase-cyrillic { font-size: 1.3rem; }
+/* ── Dialogue ── */
+.dlg-scenario{background:var(--card);border:1px solid var(--border);border-radius:20px;margin-bottom:12px;overflow:hidden}
+.dlg-header{
+  padding:16px 18px;background:linear-gradient(135deg,rgba(79,140,255,.1),rgba(124,79,255,.07));
+  border-bottom:1px solid transparent;cursor:pointer;display:flex;align-items:center;gap:12px;
+  min-height:72px
 }
+.dlg-scenario.open .dlg-header{border-bottom-color:var(--border)}
+.dlg-icon{font-size:1.8rem;flex-shrink:0}
+.dlg-meta{flex:1;min-width:0}
+.dlg-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.dlg-sub{font-size:.82rem;color:var(--text2);white-space:normal;word-break:break-word}
+.dlg-chev{margin-left:auto;color:var(--text3);font-size:.9rem;transition:transform .2s;flex-shrink:0}
+.dlg-scenario.open .dlg-chev{transform:rotate(180deg)}
+.dlg-body{display:none;padding:16px}
+.dlg-scenario.open .dlg-body{display:block}
+.dlg-play-all{
+  width:100%;padding:12px;background:rgba(79,140,255,.1);border:1px solid rgba(79,140,255,.3);
+  border-radius:12px;color:var(--accent);font-size:.92rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:14px;min-height:48px
+}
+.dlg-play-all:active{background:rgba(79,140,255,.2)}
+.dlg-line{display:flex;gap:10px;margin-bottom:14px;align-items:flex-start}
+.dlg-line.you{flex-direction:row-reverse}
+.spk-lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);margin-bottom:5px}
+.dlg-line.you .spk-lbl{color:var(--accent);text-align:right}
+.bubble{
+  max-width:80%;padding:12px 15px;background:var(--surface);
+  border:1px solid var(--border);border-radius:16px;border-top-left-radius:4px
+}
+.dlg-line.you .bubble{
+  background:rgba(79,140,255,.12);border-color:rgba(79,140,255,.28);
+  border-radius:16px;border-top-right-radius:4px
+}
+.b-bg{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:3px;word-break:break-word;line-height:1.3}
+.b-tr{font-size:.85rem;color:var(--accent);font-style:italic;margin-bottom:2px;word-break:break-word}
+.b-ph{font-size:.8rem;color:var(--ph-color);font-weight:600;margin-bottom:3px}
+.b-en{font-size:.85rem;color:var(--text2);word-break:break-word;line-height:1.35}
+.b-play{
+  background:none;border:none;color:var(--text3);
+  font-size:.8rem;cursor:pointer;margin-top:7px;padding:0;
+  display:flex;align-items:center;gap:5px;min-height:32px
+}
+.b-play:active{color:var(--accent)}
 
-/* ── Tips box ── */
-.tips-box { background: rgba(79,124,255,0.08); border: 1px solid rgba(79,124,255,0.2); border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text2); line-height: 1.6; }
-.tips-box strong { color: var(--accent); }
-
-/* ── Completion badge ── */
-.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; }
-.badge-done { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
-
-/* ── Category separator ── */
-.cat-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text3); padding: 16px 0 8px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
-
-/* ── Shake animation ── */
-@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
-.shake { animation: shake 0.4s; }
+/* ── Responsive tweaks ── */
+@media(min-width:600px){
+  .fc{min-height:300px}
+  .fc-bg{font-size:2.4rem}
+  .modules-grid{display:grid;grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 <div id="app">
 
-<!-- ═══════════════════════════════════════ HOME ═══════════════════════════════════════ -->
-<div id="screen-home" class="screen active">
+<!-- HOME -->
+<div id="s-home" class="screen active">
   <div class="home-header">
     <div class="flag">🇧🇬</div>
     <h1 class="home-title">Sofia <span>Ready</span></h1>
-    <p class="home-sub">Learn conversational Bulgarian in 4 hours — real phrases, real dialogues, offline forever.</p>
+    <p class="home-sub">Learn Bulgarian from English in 4 hours — real phrases, accurate pronunciation, works offline on Android.</p>
   </div>
-
-  <div id="voice-status-home" class="voice-status">
-    <div class="voice-dot" id="voice-dot"></div>
-    <span id="voice-label">Checking Bulgarian voice support…</span>
+  <div class="voice-pill">
+    <div class="voice-dot" id="v-dot"></div>
+    <span id="v-label">Checking Bulgarian audio…</span>
   </div>
-
-  <div class="progress-summary">
+  <div class="progress-card">
     <h3>Your Progress</h3>
-    <div class="progress-bar-outer"><div class="progress-bar-inner" id="overall-progress-bar" style="width:0%"></div></div>
-    <div class="progress-label">You've mastered <span id="overall-count">0</span> of <span id="overall-total">0</span> phrases</div>
+    <div class="pb-outer"><div class="pb-inner" id="pb" style="width:0%"></div></div>
+    <div class="pb-label">Mastered <span id="pb-n">0</span> of <span id="pb-t">0</span> phrases</div>
   </div>
-
-  <div class="modules-grid" id="modules-grid"></div>
+  <div class="modules-grid" id="home-grid"></div>
 </div>
 
-<!-- ═══════════════════════════════════════ MODULE ══════════════════════════════════════ -->
-<div id="screen-module" class="screen">
+<!-- MODULE -->
+<div id="s-module" class="screen">
   <nav>
-    <button class="nav-back" onclick="showHome()">← Back</button>
-    <span class="nav-title" id="module-nav-title"></span>
-    <span style="width:60px"></span>
+    <button class="nav-back" onclick="goHome()">←</button>
+    <span class="nav-title" id="mod-title"></span>
+    <div class="nav-spacer"></div>
   </nav>
-  <div class="mode-tabs">
-    <button class="tab-btn active" onclick="switchTab('list',this)">📖 Browse</button>
-    <button class="tab-btn" onclick="switchTab('flashcard',this)">🃏 Flashcards</button>
-    <button class="tab-btn" onclick="switchTab('quiz',this)">🎯 Quiz</button>
+  <div class="tabs" id="mod-tabs">
+    <button class="tab active" onclick="switchTab('list',this)">📖 Browse</button>
+    <button class="tab" onclick="switchTab('flash',this)">🃏 Flashcards</button>
+    <button class="tab" onclick="switchTab('quiz',this)">🎯 Quiz</button>
   </div>
-  <div class="mode-content" id="mode-content"></div>
+  <div class="content" id="mod-content"></div>
 </div>
 
-<!-- ═══════════════════════════════════════ ALPHABET ═══════════════════════════════════ -->
-<div id="screen-alphabet" class="screen">
+<!-- ALPHABET -->
+<div id="s-alpha" class="screen">
   <nav>
-    <button class="nav-back" onclick="showHome()">← Back</button>
+    <button class="nav-back" onclick="goHome()">←</button>
     <span class="nav-title">Cyrillic Alphabet</span>
-    <span style="width:60px"></span>
+    <div class="nav-spacer"></div>
   </nav>
-  <div class="mode-content" id="alphabet-content"></div>
+  <div class="content" id="alpha-content"></div>
 </div>
 
-<!-- ═══════════════════════════════════════ DIALOGUES ══════════════════════════════════ -->
-<div id="screen-dialogues" class="screen">
+<!-- DIALOGUES -->
+<div id="s-dlg" class="screen">
   <nav>
-    <button class="nav-back" onclick="showHome()">← Back</button>
+    <button class="nav-back" onclick="goHome()">←</button>
     <span class="nav-title">Real Dialogues</span>
-    <span style="width:60px"></span>
+    <div class="nav-spacer"></div>
   </nav>
-  <div class="mode-content" id="dialogues-content"></div>
+  <div class="content" id="dlg-content"></div>
 </div>
 
-</div><!-- #app -->
-
+</div>
 <script>
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // DATA
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 
 const ALPHABET = [
-  {upper:'А',lower:'а',sound:'a',example:'авто (avto) — car'},
-  {upper:'Б',lower:'б',sound:'b',example:'банан (banan) — banana'},
-  {upper:'В',lower:'в',sound:'v',example:'вода (voda) — water'},
-  {upper:'Г',lower:'г',sound:'g',example:'град (grad) — city'},
-  {upper:'Д',lower:'д',sound:'d',example:'ден (den) — day'},
-  {upper:'Е',lower:'е',sound:'e',example:'есен (esen) — autumn'},
-  {upper:'Ж',lower:'ж',sound:'zh (like "s" in measure)',example:'жена (zhena) — woman'},
-  {upper:'З',lower:'з',sound:'z',example:'зима (zima) — winter'},
-  {upper:'И',lower:'и',sound:'ee',example:'имам (imam) — I have'},
-  {upper:'Й',lower:'й',sound:'y (short)',example:'йогурт (yogurt)'},
-  {upper:'К',lower:'к',sound:'k',example:'кафе (kafe) — coffee'},
-  {upper:'Л',lower:'л',sound:'l',example:'лято (lyato) — summer'},
-  {upper:'М',lower:'м',sound:'m',example:'море (more) — sea'},
-  {upper:'Н',lower:'н',sound:'n',example:'нощ (nosht) — night'},
-  {upper:'О',lower:'о',sound:'o',example:'огън (ogan) — fire'},
-  {upper:'П',lower:'п',sound:'p',example:'парк (park) — park'},
-  {upper:'Р',lower:'р',sound:'r (rolled)',example:'риба (riba) — fish'},
-  {upper:'С',lower:'с',sound:'s',example:'слънце (slantse) — sun'},
-  {upper:'Т',lower:'т',sound:'t',example:'тук (tuk) — here'},
-  {upper:'У',lower:'у',sound:'oo',example:'улица (ulitsa) — street'},
-  {upper:'Ф',lower:'ф',sound:'f',example:'февруари (fevruari) — February'},
-  {upper:'Х',lower:'х',sound:'kh (guttural h)',example:'хляб (hlyab) — bread'},
-  {upper:'Ц',lower:'ц',sound:'ts',example:'цена (tsena) — price'},
-  {upper:'Ч',lower:'ч',sound:'ch',example:'чай (chai) — tea'},
-  {upper:'Ш',lower:'ш',sound:'sh',example:'шоколад (shokolad) — chocolate'},
-  {upper:'Щ',lower:'щ',sound:'sht',example:'щастие (shtastie) — happiness'},
-  {upper:'Ъ',lower:'ъ',sound:'uh (like "uh-oh")',example:'Ъгъл (agal) — corner'},
-  {upper:'Ь',lower:'ь',sound:'y (softens prev. consonant)',example:'паньове (panyove)'},
-  {upper:'Ю',lower:'ю',sound:'yu',example:'юли (yuli) — July'},
-  {upper:'Я',lower:'я',sound:'ya',example:'яйце (yaytse) — egg'},
-];
-
-const MODULES = [
-  {
-    id: 'essentials',
-    icon: '👋',
-    name: 'Essential Phrases',
-    desc: 'Greetings, politeness, and survival basics',
-    categories: [
-      {
-        label: 'Greetings',
-        items: [
-          {bg:'Здравейте',tr:'Zdraveyte',en:'Hello (formal/plural)',usage:'Use with strangers, in shops, restaurants — always safe'},
-          {bg:'Здравей',tr:'Zdravey',en:'Hello (informal)',usage:'Use with people your age or younger once acquainted'},
-          {bg:'Добро утро',tr:'Dobro utro',en:'Good morning',usage:'Until about 11–12am'},
-          {bg:'Добър ден',tr:'Dobar den',en:'Good day / Good afternoon',usage:'Standard daytime greeting'},
-          {bg:'Добър вечер',tr:'Dobar vecher',en:'Good evening',usage:'From ~6pm onwards'},
-          {bg:'Лека нощ',tr:'Leka nosht',en:'Good night',usage:'When saying goodbye at night or before bed'},
-          {bg:'Довиждане',tr:'Dovizhdane',en:'Goodbye (formal)',usage:'Standard polite farewell'},
-          {bg:'Чао',tr:'Chao',en:'Bye (informal)',usage:'Casual goodbye, widely used among younger people in Sofia'},
-        ]
-      },
-      {
-        label: 'Politeness',
-        items: [
-          {bg:'Моля',tr:'Molya',en:'Please / You\'re welcome',usage:'Use when asking AND when someone thanks you'},
-          {bg:'Благодаря',tr:'Blagodarya',en:'Thank you',usage:'Standard thank you'},
-          {bg:'Мерси',tr:'Mersi',en:'Thanks (informal)',usage:'Borrowed from French, very common in Sofia'},
-          {bg:'Съжалявам',tr:'Sazhalyavam',en:'I\'m sorry / Excuse me',usage:'Apology or to get attention'},
-          {bg:'Извинете',tr:'Izvinete',en:'Excuse me (formal)',usage:'To pass someone, get attention, or apologize'},
-          {bg:'Да',tr:'Da',en:'Yes',usage:''},
-          {bg:'Не',tr:'Ne',en:'No',usage:''},
-          {bg:'Разбирам',tr:'Razbiram',en:'I understand',usage:''},
-          {bg:'Не разбирам',tr:'Ne razbiram',en:'I don\'t understand',usage:'Say this clearly if lost'},
-          {bg:'Говорите ли английски?',tr:'Govorite li angliyski?',en:'Do you speak English?',usage:'Most young Sofians do — asking is respectful'},
-          {bg:'Говоря малко български',tr:'Govorya malko balgarski',en:'I speak a little Bulgarian',usage:'People will appreciate the effort enormously'},
-        ]
-      },
-      {
-        label: 'Asking for Help',
-        items: [
-          {bg:'Можете ли да ми помогнете?',tr:'Mozhete li da mi pomognete?',en:'Can you help me?',usage:''},
-          {bg:'Колко струва?',tr:'Kolko struva?',en:'How much does it cost?',usage:'Essential for any purchase'},
-          {bg:'Къде е...?',tr:'Kade e...?',en:'Where is...?',usage:'Fill in your destination after е (e)'},
-          {bg:'Не знам',tr:'Ne znam',en:'I don\'t know',usage:''},
-          {bg:'Повторете, моля',tr:'Povtorete, molya',en:'Please repeat that',usage:'Ask them to say it again'},
-          {bg:'По-бавно, моля',tr:'Po-bavno, molya',en:'Slower, please',usage:'Ask someone to speak more slowly'},
-          {bg:'Напишете го, моля',tr:'Napishete go, molya',en:'Please write it down',usage:'Useful when you can\'t parse the speech'},
-        ]
-      }
-    ]
-  },
-  {
-    id: 'restaurant',
-    icon: '🍽️',
-    name: 'Restaurants & Cafes',
-    desc: 'Order food, drinks, ask for the bill',
-    categories: [
-      {
-        label: 'Getting seated / Ordering',
-        items: [
-          {bg:'Маса за двама, моля',tr:'Masa za dvama, molya',en:'A table for two, please',usage:'Change двама to трима (trima) for 3, четирима (chetirima) for 4'},
-          {bg:'Менюто, моля',tr:'Menyuto, molya',en:'The menu, please',usage:''},
-          {bg:'Готови сме да поръчаме',tr:'Gotovi sme da porachame',en:'We\'re ready to order',usage:''},
-          {bg:'Какво препоръчвате?',tr:'Kakvo preporachvate?',en:'What do you recommend?',usage:''},
-          {bg:'Искам...',tr:'Iskam...',en:'I want / I\'d like...',usage:'Point at menu item after saying this'},
-          {bg:'Едно кафе, моля',tr:'Edno kafe, molya',en:'One coffee, please',usage:''},
-          {bg:'Едно бира, моля',tr:'Edno bira, molya',en:'One beer, please',usage:'Zagorka and Kamenitza are local brands'},
-          {bg:'Чаша вино, моля',tr:'Chasha vino, molya',en:'A glass of wine, please',usage:''},
-          {bg:'Чаша вода, моля',tr:'Chasha voda, molya',en:'A glass of water, please',usage:''},
-          {bg:'Без алкохол',tr:'Bez alkohol',en:'Non-alcoholic / No alcohol',usage:''},
-          {bg:'Вегетарианско, моля',tr:'Vegetariansko, molya',en:'Vegetarian, please',usage:''},
-          {bg:'Без месо',tr:'Bez meso',en:'Without meat',usage:''},
-          {bg:'Алергичен съм към...',tr:'Alergichen sam kam...',en:'I am allergic to...',usage:'Critical safety phrase'},
-        ]
-      },
-      {
-        label: 'Common Food Items',
-        items: [
-          {bg:'хляб',tr:'hlyab',en:'bread',usage:'Almost always served free with meals'},
-          {bg:'мляко',tr:'mlyako',en:'milk',usage:''},
-          {bg:'сирене',tr:'sirene',en:'white cheese (feta-like)',usage:'A staple — in salads, pastries'},
-          {bg:'кашкавал',tr:'kashkaval',en:'yellow cheese',usage:'Common in sandwiches'},
-          {bg:'кебапче',tr:'kebapche',en:'grilled minced meat sausage',usage:'Must-try Bulgarian street food'},
-          {bg:'кюфте',tr:'kyufte',en:'grilled meatball',usage:'Similar to kebapche but round'},
-          {bg:'баница',tr:'banitsa',en:'pastry with cheese/spinach',usage:'Bulgarian breakfast staple — get it fresh'},
-          {bg:'шопска салата',tr:'shopska salata',en:'tomato & cucumber salad with white cheese',usage:'The national salad — order it'},
-          {bg:'таратор',tr:'tarator',en:'cold yoghurt & cucumber soup',usage:'Refreshing summer soup, very Bulgarian'},
-          {bg:'пиле',tr:'pile',en:'chicken',usage:''},
-          {bg:'риба',tr:'riba',en:'fish',usage:''},
-          {bg:'картофи',tr:'kartofi',en:'potatoes',usage:''},
-          {bg:'сладолед',tr:'sladoled',en:'ice cream',usage:''},
-          {bg:'десерт',tr:'desert',en:'dessert',usage:''},
-        ]
-      },
-      {
-        label: 'Paying',
-        items: [
-          {bg:'Сметката, моля',tr:'Smetkata, molya',en:'The bill, please',usage:'Most important phrase when dining'},
-          {bg:'Заедно',tr:'Zaedno',en:'Together (one bill)',usage:''},
-          {bg:'Разделно',tr:'Razdelno',en:'Separately (split the bill)',usage:''},
-          {bg:'Приемате ли карти?',tr:'Priemate li karti?',en:'Do you accept cards?',usage:'Many places are cash-only'},
-          {bg:'Вземете ресто',tr:'Vzemete resto',en:'Keep the change',usage:'Standard way to tip in Bulgaria'},
-          {bg:'Беше много вкусно',tr:'Beshe mnogo vkusno',en:'It was very delicious',usage:'Say this as you leave — much appreciated'},
-        ]
-      }
-    ]
-  },
-  {
-    id: 'shopping',
-    icon: '🛍️',
-    name: 'Shopping',
-    desc: 'Markets, stores, prices, and haggling',
-    categories: [
-      {
-        label: 'In the Store',
-        items: [
-          {bg:'Търся...',tr:'Tarsya...',en:'I\'m looking for...',usage:''},
-          {bg:'Имате ли...?',tr:'Imate li...?',en:'Do you have...?',usage:''},
-          {bg:'Колко струва?',tr:'Kolko struva?',en:'How much does it cost?',usage:''},
-          {bg:'Твърде скъпо',tr:'Tvarde skapo',en:'Too expensive',usage:'Useful at markets'},
-          {bg:'По-евтино, моля',tr:'Po-evtino, molya',en:'Cheaper, please',usage:''},
-          {bg:'Взимам го',tr:'Vzimam go',en:'I\'ll take it',usage:''},
-          {bg:'Не, благодаря',tr:'Ne, blagodarya',en:'No, thank you',usage:'Polite refusal'},
-          {bg:'Само разглеждам',tr:'Samo razglezhdam',en:'Just browsing',usage:'When a shopkeeper approaches'},
-          {bg:'Мога ли да го пробвам?',tr:'Moga li da go probvam?',en:'Can I try it on?',usage:'Clothing shops'},
-          {bg:'Размер',tr:'Razmer',en:'Size',usage:''},
-          {bg:'Голям / Малък',tr:'Golyam / Malak',en:'Large / Small',usage:''},
-          {bg:'Друг цвят?',tr:'Drug tsyat?',en:'A different colour?',usage:''},
-          {bg:'Разписка, моля',tr:'Razpiska, molya',en:'A receipt, please',usage:''},
-        ]
-      },
-      {
-        label: 'At the Market (Пазар)',
-        items: [
-          {bg:'Прясно ли е?',tr:'Pryasno li e?',en:'Is it fresh?',usage:'At produce stalls'},
-          {bg:'Дайте ми един килограм',tr:'Dayte mi edin kilogram',en:'Give me one kilogram',usage:''},
-          {bg:'Половин килограм',tr:'Polovin kilogram',en:'Half a kilogram',usage:''},
-          {bg:'Нещо друго?',tr:'Neshto drugo?',en:'Anything else?',usage:'Seller will often ask you this'},
-          {bg:'Толкова, благодаря',tr:'Tolkova, blagodarya',en:'That\'s all, thank you',usage:''},
-        ]
-      }
-    ]
-  },
-  {
-    id: 'transport',
-    icon: '🚇',
-    name: 'Getting Around',
-    desc: 'Metro, taxis, buses, and directions in Sofia',
-    categories: [
-      {
-        label: 'Directions',
-        items: [
-          {bg:'Как да стигна до...?',tr:'Kak da stigna do...?',en:'How do I get to...?',usage:''},
-          {bg:'Наляво',tr:'Nalyavo',en:'Left',usage:''},
-          {bg:'Надясно',tr:'Nadyasno',en:'Right',usage:''},
-          {bg:'Направо',tr:'Napravo',en:'Straight ahead',usage:''},
-          {bg:'Назад',tr:'Nazad',en:'Back / Behind',usage:''},
-          {bg:'Близо / Далеко',tr:'Blizo / Daleko',en:'Near / Far',usage:''},
-          {bg:'Спрете тук, моля',tr:'Sprete tuk, molya',en:'Stop here, please',usage:'In a taxi'},
-          {bg:'На следващата спирка',tr:'Na sledvashtata spirka',en:'At the next stop',usage:''},
-        ]
-      },
-      {
-        label: 'Transport',
-        items: [
-          {bg:'Метро',tr:'Metro',en:'Metro (subway)',usage:'Sofia has 3 metro lines — fast and cheap'},
-          {bg:'Автобус',tr:'Avtobus',en:'Bus',usage:''},
-          {bg:'Трамвай',tr:'Tramvay',en:'Tram',usage:''},
-          {bg:'Такси',tr:'Taksi',en:'Taxi',usage:'Use OK Taxi or Yellow Taxi apps — avoid unmarked cabs'},
-          {bg:'Летище',tr:'Letishte',en:'Airport',usage:'Sofia Airport'},
-          {bg:'Централна гара',tr:'Tsentralna gara',en:'Central Train Station',usage:''},
-          {bg:'Центърът',tr:'Tsantarat',en:'The city centre',usage:''},
-          {bg:'Билет, моля',tr:'Bilet, molya',en:'A ticket, please',usage:'Single ride tickets for bus/metro'},
-          {bg:'Два билета, моля',tr:'Dva bileta, molya',en:'Two tickets, please',usage:''},
-          {bg:'Откъде тръгва автобусът за...?',tr:'Otkade tragva avtobusat za...?',en:'Where does the bus to ... leave from?',usage:''},
-        ]
-      },
-      {
-        label: 'Key Sofia Landmarks',
-        items: [
-          {bg:'Народният театър',tr:'Narodniyat teatar',en:'National Theatre',usage:'Central landmark near the garden'},
-          {bg:'Александър Невски',tr:'Aleksandar Nevski',en:'Alexander Nevsky Cathedral',usage:'Most famous landmark in Sofia'},
-          {bg:'Витоша булевард',tr:'Vitosha bulevard',en:'Vitosha Boulevard',usage:'Main pedestrian shopping street'},
-          {bg:'Национален исторически музей',tr:'Natsionalen istoricheski muzey',en:'National History Museum',usage:''},
-          {bg:'Борисова градина',tr:'Borisova gradina',en:'Boris\'s Garden (central park)',usage:'Huge park, great for walks'},
-        ]
-      }
-    ]
-  },
-  {
-    id: 'numbers',
-    icon: '🔢',
-    name: 'Numbers & Money',
-    desc: 'Count, pay, tell the time',
-    isNumbers: true,
-    categories: []
-  },
-  {
-    id: 'emergency',
-    icon: '🆘',
-    name: 'Emergency & Health',
-    desc: 'Safety phrases, pharmacy, medical needs',
-    categories: [
-      {
-        label: 'Emergency',
-        items: [
-          {bg:'Помощ!',tr:'Pomosht!',en:'Help!',usage:'Shout loudly'},
-          {bg:'Обадете се на линейка!',tr:'Obadete se na lineyka!',en:'Call an ambulance!',usage:'Emergency: 112 is the EU emergency number'},
-          {bg:'Полиция!',tr:'Politsiya!',en:'Police!',usage:'Emergency number: 112'},
-          {bg:'Пожар!',tr:'Pozhar!',en:'Fire!',usage:''},
-          {bg:'Откраднаха ми чантата',tr:'Otkradnakha mi chantata',en:'My bag was stolen',usage:''},
-          {bg:'Загубих паспорта си',tr:'Zagubikh pasporta si',en:'I lost my passport',usage:''},
-          {bg:'Нужна ми е помощ',tr:'Nuzhna mi e pomosht',en:'I need help',usage:''},
-          {bg:'Болен съм',tr:'Bolen sam',en:'I am sick (male)',usage:''},
-          {bg:'Болна съм',tr:'Bolna sam',en:'I am sick (female)',usage:''},
-          {bg:'Имам алергия към...',tr:'Imam alergiya kam...',en:'I have an allergy to...',usage:''},
-        ]
-      },
-      {
-        label: 'Pharmacy & Health',
-        items: [
-          {bg:'Аптека',tr:'Apteka',en:'Pharmacy',usage:'Green cross sign, open late in Sofia centre'},
-          {bg:'Болница',tr:'Bolnitsa',en:'Hospital',usage:''},
-          {bg:'Лекар',tr:'Lekar',en:'Doctor',usage:''},
-          {bg:'Имате ли болкоуспокояващо?',tr:'Imate li bolkouspokoyvashto?',en:'Do you have painkillers?',usage:''},
-          {bg:'Главоболие',tr:'Glavabolie',en:'Headache',usage:''},
-          {bg:'Стомашни болки',tr:'Stomashni bolki',en:'Stomach ache',usage:''},
-          {bg:'Температура',tr:'Temperatura',en:'Fever / Temperature',usage:''},
-          {bg:'Нужна ми е рецепта?',tr:'Nuzhna mi e retsepta?',en:'Do I need a prescription?',usage:''},
-        ]
-      }
-    ]
-  },
-  {
-    id: 'social',
-    icon: '💬',
-    name: 'Social & Small Talk',
-    desc: 'Make friends, express opinions, go deeper',
-    categories: [
-      {
-        label: 'About Yourself',
-        items: [
-          {bg:'Казвам се...',tr:'Kazvam se...',en:'My name is...',usage:'Say your name after се (se)'},
-          {bg:'Как се казвате?',tr:'Kak se kazvate?',en:'What is your name?',usage:'Formal'},
-          {bg:'Откъде сте?',tr:'Otkade ste?',en:'Where are you from?',usage:''},
-          {bg:'Аз съм от...',tr:'Az sam ot...',en:'I am from...',usage:''},
-          {bg:'На колко сте години?',tr:'Na kolko ste godini?',en:'How old are you?',usage:'Less taboo than in some cultures'},
-          {bg:'Много ми харесва България',tr:'Mnogo mi haresva Balgariya',en:'I really like Bulgaria',usage:'Locals will love hearing this'},
-          {bg:'Храната е невероятна',tr:'Hranata e neveroyatna',en:'The food is incredible',usage:''},
-          {bg:'За пръв път съм тук',tr:'Za prav pat sam tuk',en:'This is my first time here',usage:''},
-          {bg:'Радвам се да се запознаем',tr:'Radvam se da se zapoznaem',en:'Pleased to meet you',usage:''},
-        ]
-      },
-      {
-        label: 'Opinions & Reactions',
-        items: [
-          {bg:'Страхотно!',tr:'Strakhotno!',en:'Amazing! / Great!',usage:'General positive exclamation'},
-          {bg:'Много хубаво',tr:'Mnogo khubavo',en:'Very nice / Beautiful',usage:''},
-          {bg:'Интересно',tr:'Interesno',en:'Interesting',usage:''},
-          {bg:'Наистина ли?',tr:'Naistina li?',en:'Really?',usage:''},
-          {bg:'Не е лошо',tr:'Ne e losho',en:'Not bad',usage:''},
-          {bg:'Харесвам го',tr:'Kharésvam go',en:'I like it',usage:''},
-          {bg:'Не ми харесва',tr:'Ne mi kharesva',en:'I don\'t like it',usage:''},
-          {bg:'Наздраве!',tr:'Nazdrave!',en:'Cheers! (toast)',usage:'ESSENTIAL for any social drinking occasion'},
-          {bg:'Ще се видим!',tr:'Shte se vidim!',en:'See you later!',usage:''},
-          {bg:'Беше ми много приятно',tr:'Beshe mi mnogo priyatno',en:'It was a great pleasure',usage:'Warm farewell'},
-        ]
-      }
-    ]
-  },
+  {U:'А',l:'а',sound:'a',ph:'like "a" in father',ex:'авто (avto) — car'},
+  {U:'Б',l:'б',sound:'b',ph:'"b" as in boy',ex:'банан (banan) — banana'},
+  {U:'В',l:'в',sound:'v',ph:'"v" as in vine',ex:'вода (voda) — water'},
+  {U:'Г',l:'г',sound:'g',ph:'"g" as in go',ex:'град (grad) — city'},
+  {U:'Д',l:'д',sound:'d',ph:'"d" as in day',ex:'ден (den) — day'},
+  {U:'Е',l:'е',sound:'e',ph:'"e" as in bed',ex:'есен (esen) — autumn'},
+  {U:'Ж',l:'ж',sound:'zh',ph:'like "s" in measure / "g" in beige',ex:'жена (zhena) — woman'},
+  {U:'З',l:'з',sound:'z',ph:'"z" as in zero',ex:'зима (zima) — winter'},
+  {U:'И',l:'и',sound:'ee',ph:'"ee" as in see',ex:'имам (imam) — I have'},
+  {U:'Й',l:'й',sound:'y',ph:'short "y" as in yes (after vowels)',ex:'чай (chay) — tea'},
+  {U:'К',l:'к',sound:'k',ph:'"k" as in key',ex:'кафе (kafe) — coffee'},
+  {U:'Л',l:'л',sound:'l',ph:'"l" as in lamp',ex:'лято (lyato) — summer'},
+  {U:'М',l:'м',sound:'m',ph:'"m" as in map',ex:'море (more) — sea'},
+  {U:'Н',l:'н',sound:'n',ph:'"n" as in no',ex:'нощ (nosht) — night'},
+  {U:'О',l:'о',sound:'o',ph:'"o" as in off',ex:'огън (ogan) — fire'},
+  {U:'П',l:'п',sound:'p',ph:'"p" as in park',ex:'парк (park) — park'},
+  {U:'Р',l:'р',sound:'r',ph:'rolled "r" — like Spanish r',ex:'риба (riba) — fish'},
+  {U:'С',l:'с',sound:'s',ph:'"s" as in sun',ex:'слънце (slantse) — sun'},
+  {U:'Т',l:'т',sound:'t',ph:'"t" as in top',ex:'тук (tuk) — here'},
+  {U:'У',l:'у',sound:'oo',ph:'"oo" as in food',ex:'улица (ulitsa) — street'},
+  {U:'Ф',l:'ф',sound:'f',ph:'"f" as in fun',ex:'февруари (fevruari) — February'},
+  {U:'Х',l:'х',sound:'kh',ph:'guttural "h" — like Scottish loch',ex:'хляб (hlyab) — bread'},
+  {U:'Ц',l:'ц',sound:'ts',ph:'"ts" as in cats',ex:'цена (tsena) — price'},
+  {U:'Ч',l:'ч',sound:'ch',ph:'"ch" as in church',ex:'чай (chai) — tea'},
+  {U:'Ш',l:'ш',sound:'sh',ph:'"sh" as in shop',ex:'шоколад (shokolad) — chocolate'},
+  {U:'Щ',l:'щ',sound:'sht',ph:'"sht" — like pushed + t',ex:'щастие (shtastie) — happiness'},
+  {U:'Ъ',l:'ъ',sound:'uh',ph:'"uh" as in "uh-oh" — no English twin',ex:'Ъгъл (ugul) — corner'},
+  {U:'Ь',l:'ь',sound:'y-soft',ph:'softens the prev consonant — subtle y',ex:'rarely starts words'},
+  {U:'Ю',l:'ю',sound:'yu',ph:'"yu" as in you',ex:'юли (yuli) — July'},
+  {U:'Я',l:'я',sound:'ya',ph:'"ya" as in yard',ex:'яйце (yaytse) — egg'},
 ];
 
 const NUMBERS = [
-  {n:0,bg:'нула',tr:'nula'},
-  {n:1,bg:'едно',tr:'edno'},
-  {n:2,bg:'две',tr:'dve'},
-  {n:3,bg:'три',tr:'tri'},
-  {n:4,bg:'четири',tr:'chetiri'},
-  {n:5,bg:'пет',tr:'pet'},
-  {n:6,bg:'шест',tr:'shest'},
-  {n:7,bg:'седем',tr:'sedem'},
-  {n:8,bg:'осем',tr:'osem'},
-  {n:9,bg:'девет',tr:'devet'},
-  {n:10,bg:'десет',tr:'deset'},
-  {n:11,bg:'единадесет',tr:'edinadeset'},
-  {n:12,bg:'дванадесет',tr:'dvanadeset'},
-  {n:13,bg:'тринадесет',tr:'trinadeset'},
-  {n:14,bg:'четиринадесет',tr:'chetirideset'},
-  {n:15,bg:'петнадесет',tr:'petnadeset'},
-  {n:16,bg:'шестнадесет',tr:'shestnadeset'},
-  {n:17,bg:'седемнадесет',tr:'sedemnadeset'},
-  {n:18,bg:'осемнадесет',tr:'osemnadeset'},
-  {n:19,bg:'деветнадесет',tr:'devetnadeset'},
-  {n:20,bg:'двадесет',tr:'dvadeset'},
-  {n:30,bg:'тридесет',tr:'trideset'},
-  {n:40,bg:'четиридесет',tr:'chetirideset'},
-  {n:50,bg:'петдесет',tr:'petdeset'},
-  {n:60,bg:'шестдесет',tr:'shestdeset'},
-  {n:70,bg:'седемдесет',tr:'sedemdeset'},
-  {n:80,bg:'осемдесет',tr:'osemdeset'},
-  {n:90,bg:'деветдесет',tr:'devetdeset'},
-  {n:100,bg:'сто',tr:'sto'},
-  {n:200,bg:'двеста',tr:'dvesta'},
-  {n:1000,bg:'хиляда',tr:'hilyada'},
+  {n:0,bg:'нула',tr:'nula',ph:'NOO-lah'},
+  {n:1,bg:'едно',tr:'edno',ph:'ED-noh'},
+  {n:2,bg:'две',tr:'dve',ph:'dveh'},
+  {n:3,bg:'три',tr:'tri',ph:'tree'},
+  {n:4,bg:'четири',tr:'chetiri',ph:'CHEH-tee-ree'},
+  {n:5,bg:'пет',tr:'pet',ph:'pet'},
+  {n:6,bg:'шест',tr:'shest',ph:'shest'},
+  {n:7,bg:'седем',tr:'sedem',ph:'SEH-dem'},
+  {n:8,bg:'осем',tr:'osem',ph:'OH-sem'},
+  {n:9,bg:'девет',tr:'devet',ph:'DEH-vet'},
+  {n:10,bg:'десет',tr:'deset',ph:'DEH-set'},
+  {n:11,bg:'единадесет',tr:'edinadeset',ph:'eh-DEE-nah-deh-set'},
+  {n:12,bg:'дванадесет',tr:'dvanadeset',ph:'dvah-NAH-deh-set'},
+  {n:13,bg:'тринадесет',tr:'trinadeset',ph:'tree-NAH-deh-set'},
+  {n:14,bg:'четиринадесет',tr:'chetirideset',ph:'cheh-tee-ree-NAH-deh-set'},
+  {n:15,bg:'петнадесет',tr:'petnadeset',ph:'pet-NAH-deh-set'},
+  {n:16,bg:'шестнадесет',tr:'shestnadeset',ph:'shest-NAH-deh-set'},
+  {n:17,bg:'седемнадесет',tr:'sedemnadeset',ph:'seh-dem-NAH-deh-set'},
+  {n:18,bg:'осемнадесет',tr:'osemnadeset',ph:'oh-sem-NAH-deh-set'},
+  {n:19,bg:'деветнадесет',tr:'devetnadeset',ph:'deh-vet-NAH-deh-set'},
+  {n:20,bg:'двадесет',tr:'dvadeset',ph:'DVAH-deh-set'},
+  {n:30,bg:'тридесет',tr:'trideset',ph:'TREE-deh-set'},
+  {n:40,bg:'четиридесет',tr:'chetirideset',ph:'cheh-TEE-ree-deh-set'},
+  {n:50,bg:'петдесет',tr:'petdeset',ph:'pet-deh-SET'},
+  {n:100,bg:'сто',tr:'sto',ph:'stoh'},
+  {n:200,bg:'двеста',tr:'dvesta',ph:'DVES-tah'},
+  {n:1000,bg:'хиляда',tr:'hilyada',ph:'hee-LYAH-dah'},
+];
+
+const MODULES = [
+{
+  id:'essentials', icon:'👋', name:'Essential Phrases',
+  desc:'Greetings, politeness & asking for help',
+  cats:[
+    { lbl:'Greetings', items:[
+      {en:'Hello (formal / to a group)',bg:'Здравейте',tr:'Zdraveyte',ph:'ZDRA-vay-teh',usage:'Always safe with strangers, shop staff, anyone older'},
+      {en:'Hello (informal)',bg:'Здравей',tr:'Zdravey',ph:'zdra-VAY',usage:'Use once you\'ve become friendly'},
+      {en:'Good morning',bg:'Добро утро',tr:'Dobro utro',ph:'dob-ROH OOT-roh',usage:'Until around noon'},
+      {en:'Good afternoon / Good day',bg:'Добър ден',tr:'Dobar den',ph:'DOH-bar den',usage:'Most common daytime greeting'},
+      {en:'Good evening',bg:'Добър вечер',tr:'Dobar vecher',ph:'DOH-bar VEH-cher',usage:'From about 6 pm'},
+      {en:'Good night',bg:'Лека нощ',tr:'Leka nosht',ph:'LEH-kah nosht',usage:'Parting phrase at night'},
+      {en:'Goodbye (formal)',bg:'Довиждане',tr:'Dovizhdane',ph:'doh-VEEZH-dah-neh',usage:'Standard polite farewell'},
+      {en:'Bye (informal)',bg:'Чао',tr:'Chao',ph:'chow (like ciao)',usage:'Super common casual goodbye in Sofia'},
+    ]},
+    { lbl:'Politeness', items:[
+      {en:'Please / You\'re welcome',bg:'Моля',tr:'Molya',ph:'MOH-lyah',usage:'Works for both "please" and "you\'re welcome"'},
+      {en:'Thank you',bg:'Благодаря',tr:'Blagodarya',ph:'blah-goh-dah-RYAH',usage:'Standard — always well received'},
+      {en:'Thanks (casual)',bg:'Мерси',tr:'Mersi',ph:'MEHR-see',usage:'From French, used widely by young Sofians'},
+      {en:'I\'m sorry / Excuse me',bg:'Съжалявам',tr:'Sazhalyavam',ph:'suh-zhah-LYAH-vahm',usage:'Apology'},
+      {en:'Excuse me (to get attention)',bg:'Извинете',tr:'Izvinete',ph:'eez-vee-NEH-teh',usage:'To pass, get attention, or apologise formally'},
+      {en:'Yes',bg:'Да',tr:'Da',ph:'dah',usage:''},
+      {en:'No',bg:'Не',tr:'Ne',ph:'neh',usage:''},
+      {en:'I understand',bg:'Разбирам',tr:'Razbiram',ph:'rahz-BEE-rahm',usage:''},
+      {en:'I don\'t understand',bg:'Не разбирам',tr:'Ne razbiram',ph:'neh rahz-BEE-rahm',usage:'Say this clearly — people will slow down'},
+      {en:'Do you speak English?',bg:'Говорите ли английски?',tr:'Govorite li angliyski?',ph:'goh-VOH-ree-teh lee ang-LEEY-skee',usage:'Most young Sofians do'},
+      {en:'I speak a little Bulgarian',bg:'Говоря малко български',tr:'Govorya malko balgarski',ph:'goh-VOH-ryah MAHL-koh bal-GAHR-skee',usage:'Huge goodwill gesture — always gets a smile'},
+    ]},
+    { lbl:'Getting Help', items:[
+      {en:'Can you help me?',bg:'Можете ли да ми помогнете?',tr:'Mozhete li da mi pomognete?',ph:'MOH-zheh-teh lee dah mee poh-MOG-neh-teh',usage:''},
+      {en:'How much does it cost?',bg:'Колко струва?',tr:'Kolko struva?',ph:'KOL-koh STROO-vah',usage:'Essential for every purchase'},
+      {en:'Where is…?',bg:'Къде е…?',tr:'Kade e…?',ph:'kuh-DEH eh',usage:'Add the destination after е (eh)'},
+      {en:'I don\'t know',bg:'Не знам',tr:'Ne znam',ph:'neh znahm',usage:''},
+      {en:'Please repeat that',bg:'Повторете, моля',tr:'Povtorete, molya',ph:'pohv-toh-REH-teh MOH-lyah',usage:''},
+      {en:'Slower, please',bg:'По-бавно, моля',tr:'Po-bavno, molya',ph:'poh-BAHV-noh MOH-lyah',usage:'Ask them to speak more slowly'},
+      {en:'Please write it down',bg:'Напишете го, моля',tr:'Napishete go, molya',ph:'nah-PEE-sheh-teh goh MOH-lyah',usage:'When you can\'t parse spoken Bulgarian'},
+    ]},
+  ]
+},
+{
+  id:'restaurant', icon:'🍽️', name:'Restaurants & Cafes',
+  desc:'Order food, drinks, pay the bill',
+  cats:[
+    { lbl:'Ordering', items:[
+      {en:'A table for two, please',bg:'Маса за двама, моля',tr:'Masa za dvama, molya',ph:'MAH-sah zah DVAH-mah MOH-lyah',usage:'Change двама to трима (TREE-mah) for 3'},
+      {en:'The menu, please',bg:'Менюто, моля',tr:'Menyuto, molya',ph:'meh-NYOO-toh MOH-lyah',usage:''},
+      {en:'We\'re ready to order',bg:'Готови сме да поръчаме',tr:'Gotovi sme da porachame',ph:'GOH-toh-vee smeh dah poh-RUH-chah-meh',usage:''},
+      {en:'What do you recommend?',bg:'Какво препоръчвате?',tr:'Kakvo preporachvate?',ph:'kahk-VOH preh-poh-RUCH-vah-teh',usage:''},
+      {en:'I\'d like…',bg:'Искам…',tr:'Iskam…',ph:'EES-kahm',usage:'Point at menu item after this'},
+      {en:'One coffee, please',bg:'Едно кафе, моля',tr:'Edno kafe, molya',ph:'ED-noh kah-FEH MOH-lyah',usage:''},
+      {en:'One beer, please',bg:'Едно бира, моля',tr:'Edno bira, molya',ph:'ED-noh BEE-rah MOH-lyah',usage:'Zagorka & Kamenitza are local beers'},
+      {en:'A glass of wine, please',bg:'Чаша вино, моля',tr:'Chasha vino, molya',ph:'CHAH-shah VEE-noh MOH-lyah',usage:''},
+      {en:'A glass of water, please',bg:'Чаша вода, моля',tr:'Chasha voda, molya',ph:'CHAH-shah VOH-dah MOH-lyah',usage:''},
+      {en:'One more, please',bg:'Още едно, моля',tr:'Oshte edno, molya',ph:'OSH-teh ED-noh MOH-lyah',usage:'For another drink or dish'},
+      {en:'Non-alcoholic / No alcohol',bg:'Без алкохол',tr:'Bez alkohol',ph:'bez ahl-koh-HOL',usage:''},
+      {en:'Vegetarian, please',bg:'Вегетарианско, моля',tr:'Vegetariansko, molya',ph:'veh-geh-tah-ree-AHN-skoh MOH-lyah',usage:''},
+      {en:'Without meat',bg:'Без месо',tr:'Bez meso',ph:'bez MEH-soh',usage:''},
+      {en:'I am allergic to…',bg:'Алергичен съм към…',tr:'Alergichen sam kam…',ph:'ah-lehr-GEE-chen suhm kahm',usage:'Critical — say slowly, follow with the allergen'},
+      {en:'Is it spicy?',bg:'Пикантно ли е?',tr:'Pikantno li e?',ph:'pee-KANT-noh lee eh',usage:''},
+    ]},
+    { lbl:'Food You\'ll Encounter', items:[
+      {en:'Bread',bg:'Хляб',tr:'Hlyab',ph:'hlyahb — "hl" then yab',usage:'Almost always free with meals'},
+      {en:'White cheese (like feta)',bg:'Сирене',tr:'Sirene',ph:'see-REH-neh',usage:'A Bulgarian staple — on everything'},
+      {en:'Yellow cheese',bg:'Кашкавал',tr:'Kashkaval',ph:'kahsh-kah-VAHL',usage:'Melted on toast or in sandwiches'},
+      {en:'Grilled minced-meat sausage',bg:'Кебапче',tr:'Kebapche',ph:'keh-BAHP-cheh',usage:'Must-try Bulgarian street food'},
+      {en:'Grilled meatball',bg:'Кюфте',tr:'Kyufte',ph:'KYOOF-teh',usage:'Similar to kebapche but round'},
+      {en:'Cheese & spinach pastry',bg:'Баница',tr:'Banitsa',ph:'BAH-nee-tsah',usage:'Bulgarian breakfast — get it fresh & warm'},
+      {en:'Shopska salad (tomato, cucumber, cheese)',bg:'Шопска салата',tr:'Shopska salata',ph:'SHOP-skah sah-LAH-tah',usage:'The national salad — order it every time'},
+      {en:'Cold yoghurt & cucumber soup',bg:'Таратор',tr:'Tarator',ph:'tah-rah-TOR',usage:'Refreshing summer soup — very Bulgarian'},
+      {en:'Chicken',bg:'Пиле',tr:'Pile',ph:'PEE-leh',usage:''},
+      {en:'Fish',bg:'Риба',tr:'Riba',ph:'REE-bah',usage:''},
+      {en:'Potatoes',bg:'Картофи',tr:'Kartofi',ph:'kahr-TOH-fee',usage:''},
+      {en:'Ice cream',bg:'Сладолед',tr:'Sladoled',ph:'slah-doh-LED',usage:''},
+    ]},
+    { lbl:'Paying', items:[
+      {en:'The bill, please',bg:'Сметката, моля',tr:'Smetkata, molya',ph:'SMET-kah-tah MOH-lyah',usage:'Most important restaurant phrase'},
+      {en:'One bill (together)',bg:'Заедно',tr:'Zaedno',ph:'zah-ED-noh',usage:''},
+      {en:'Separate bills',bg:'Разделно',tr:'Razdelno',ph:'rahz-DEL-noh',usage:''},
+      {en:'Do you accept cards?',bg:'Приемате ли карти?',tr:'Priemate li karti?',ph:'pree-EH-mah-teh lee KAHR-tee',usage:'Many smaller places are cash only'},
+      {en:'Keep the change',bg:'Вземете ресто',tr:'Vzemete resto',ph:'vzeh-MEH-teh REHS-toh',usage:'Standard way to tip — very appreciated'},
+      {en:'It was very delicious',bg:'Беше много вкусно',tr:'Beshe mnogo vkusno',ph:'BEH-sheh MNOH-goh VKOOS-noh',usage:'Say this as you leave — staff will love it'},
+    ]},
+  ]
+},
+{
+  id:'casual', icon:'🗣️', name:'Casual & Street Talk',
+  desc:'Real Sofia slang, going out, making friends — talk like a local',
+  cats:[
+    { lbl:'Everyday Expressions', items:[
+      {en:'Come on! / Let\'s go! / OK!',bg:'Хайде!',tr:'Hayde!',ph:'HY-deh',usage:'The single most useful Bulgarian word — used constantly for everything'},
+      {en:'Go ahead! / Deal! / Sure!',bg:'Давай!',tr:'Davay!',ph:'dah-VY',usage:'Versatile — agreement, encouragement, "do it"'},
+      {en:'Cool! / Awesome!',bg:'Яко!',tr:'Yako!',ph:'YAH-koh',usage:'Sofia slang for something impressive'},
+      {en:'Super / Great',bg:'Супер',tr:'Super',ph:'SOO-pehr',usage:'Used exactly like English "super"'},
+      {en:'Well done! / Good job!',bg:'Маладец!',tr:'Maladets!',ph:'mah-lah-DETS',usage:'Borrowed from Russian — heard everywhere'},
+      {en:'More or less / So-so',bg:'Горе-долу',tr:'Gore-dolu',ph:'GOH-reh DOH-loo',usage:'When something is average or middling'},
+      {en:'Exactly! / That\'s right!',bg:'Точно!',tr:'Tochno!',ph:'TOCH-noh',usage:'Express strong agreement'},
+      {en:'Of course',bg:'Разбира се',tr:'Razbirase',ph:'rahz-BEE-rah seh',usage:''},
+      {en:'I have no idea',bg:'Нямам представа',tr:'Nyamam predstava',ph:'NYAH-mahm pred-STAH-vah',usage:''},
+      {en:'Whatever',bg:'Каквото и да е',tr:'Kakvoto i da e',ph:'kahk-VOH-toh ee dah eh',usage:'Dismissive — use sparingly'},
+      {en:'Enough! / Stop it!',bg:'Стига!',tr:'Stiga!',ph:'STEE-gah',usage:'When something is too much — said playfully or seriously'},
+      {en:'Seriously? / Really?',bg:'Сериозно?',tr:'Seriozno?',ph:'seh-ree-OZ-noh',usage:'Express surprise'},
+      {en:'I\'m joking',bg:'Шегувам се',tr:'Sheguvam se',ph:'sheh-GOO-vahm seh',usage:'Save yourself after a bad joke'},
+      {en:'Honestly! / Truly!',bg:'Наистина!',tr:'Naistina!',ph:'nah-EES-tee-nah',usage:'Emphasis — "I mean it!"'},
+      {en:'Not bad',bg:'Не е лошо',tr:'Ne e losho',ph:'neh eh LOH-shoh',usage:'Faint praise — or genuine compliment depending on tone'},
+    ]},
+    { lbl:'Chatting & Making Friends', items:[
+      {en:'Hey, listen / Look',bg:'Слушай',tr:'Slushai',ph:'SLOO-shy',usage:'To get someone\'s attention — like "hey" at the start of a sentence'},
+      {en:'Tell me',bg:'Кажи ми',tr:'Kazhi mi',ph:'KAH-zhee mee',usage:''},
+      {en:'Do you know? / You know?',bg:'Знаеш ли?',tr:'Znaesh li?',ph:'ZNAH-ehsh lee',usage:'Also used as a filler — "you know?"'},
+      {en:'How are you? (informal)',bg:'Как си?',tr:'Kak si?',ph:'kahk see',usage:'With friends — use "Как сте?" with strangers'},
+      {en:'Fine, thanks. And you?',bg:'Добре, мерси. А ти?',tr:'Dobre, mersi. A ti?',ph:'DOH-breh MEHR-see. ah tee',usage:'Complete response to "Как си?"'},
+      {en:'What are you doing? / What\'s up?',bg:'Какво правиш?',tr:'Kakvo pravish?',ph:'kahk-VOH PRAH-veesh',usage:'Casual greeting or genuine question'},
+      {en:'Nothing special',bg:'Нищо особено',tr:'Nishto osobeno',ph:'NEESH-toh oh-SOH-beh-noh',usage:'Standard casual reply to "What\'s up?"'},
+      {en:'Come on, let\'s have a drink',bg:'Хайде да пием нещо',tr:'Hayde da piem neshto',ph:'HY-deh dah PEE-ehm NESH-toh',usage:''},
+      {en:'Do you like…?',bg:'Харесва ли ти…?',tr:'Haresva li ti…?',ph:'hah-RES-vah lee tee',usage:''},
+      {en:'Come with us!',bg:'Ела с нас!',tr:'Ela s nas!',ph:'EH-lah s nahs',usage:''},
+      {en:'Will you come?',bg:'Ще дойдеш ли?',tr:'Shte doydesh li?',ph:'shteh DOY-desh lee',usage:'Inviting someone'},
+      {en:'Are you ready?',bg:'Готов ли си?',tr:'Gotov li si?',ph:'goh-TOV lee see',usage:'Female version: Готова ли си? (goh-TOH-vah)'},
+      {en:'Wait for me a moment',bg:'Почакай ме малко',tr:'Pochakai me malko',ph:'poh-CHAH-ky meh MAHL-koh',usage:''},
+      {en:'How do you know?',bg:'Откъде знаеш?',tr:'Otkade znaesh?',ph:'oht-KUH-deh ZNAH-ehsh',usage:'Express surprise'},
+      {en:'See you soon!',bg:'Ще се видим скоро!',tr:'Shte se vidim skoro!',ph:'shteh seh VEE-deem SKOH-roh',usage:''},
+    ]},
+    { lbl:'At the Bar / Going Out', items:[
+      {en:'Cheers!',bg:'Наздраве!',tr:'Nazdrave!',ph:'nahz-DRAH-veh',usage:'Always make eye contact when you clink glasses'},
+      {en:'To health! (toast)',bg:'За здраве!',tr:'Za zdrave!',ph:'zah ZDRAH-veh',usage:'More formal toast'},
+      {en:'To us!',bg:'За нас!',tr:'Za nas!',ph:'zah nahs',usage:''},
+      {en:'One more, please',bg:'Още едно, моля',tr:'Oshte edno, molya',ph:'OSH-teh ED-noh MOH-lyah',usage:''},
+      {en:'Next round is on me',bg:'Следващата е моя',tr:'Sledvashtata e moya',ph:'SLED-vahsh-tah-tah eh MOH-yah',usage:'Very appreciated — expect big smiles'},
+      {en:'Who\'s paying?',bg:'Кой плаща?',tr:'Koy plashta?',ph:'koy PLASH-tah',usage:''},
+      {en:'We split it half and half',bg:'Разделяме наполовина',tr:'Razdelyame napolovina',ph:'rahz-DEL-yah-meh nah-poh-loh-VEE-nah',usage:'Going Dutch'},
+      {en:'Dance with me!',bg:'Танцувай с мен!',tr:'Tantsuvay s men!',ph:'tahn-tsoo-VY s men',usage:''},
+      {en:'This place is cool',bg:'Тук е готино',tr:'Tuk e gotino',ph:'tuk eh goh-TEE-noh',usage:''},
+      {en:'Good music',bg:'Добра музика',tr:'Dobra muzika',ph:'DOH-brah MOO-zee-kah',usage:''},
+      {en:'Do you like it here?',bg:'Харесва ли ти тук?',tr:'Haresva li ti tuk?',ph:'hah-RES-vah lee tee tuk',usage:''},
+      {en:'How long are you here?',bg:'Докога сте?',tr:'Dokoga ste?',ph:'doh-KOH-gah steh',usage:'When meeting tourists or asking a visitor'},
+    ]},
+    { lbl:'Football & Culture', items:[
+      {en:'Do you watch football?',bg:'Гледаш ли футбол?',tr:'Gledash li futbol?',ph:'GLEH-dahsh lee foot-BOL',usage:'Football (soccer) is huge in Bulgaria'},
+      {en:'CSKA or Levski?',bg:'ЦСКА или Левски?',tr:'TSKA ili Levski?',ph:'TSEH-skah EE-lee LEV-skee',usage:'The eternal Sofia derby — expect strong opinions!'},
+      {en:'What\'s your favourite team?',bg:'Кой е любимият ти отбор?',tr:'Koy e lyubimiyat ti otbor?',ph:'koy eh lyoo-BEE-mee-yaht tee ot-BOR',usage:''},
+      {en:'Do you have brothers or sisters?',bg:'Имаш ли братя или сестри?',tr:'Imash li bratya ili sestri?',ph:'EE-mahsh lee BRAHT-yah EE-lee ses-TREE',usage:'Family talk is common & welcome in Bulgarian culture'},
+      {en:'I love Bulgaria',bg:'Обичам България',tr:'Obicham Balgariya',ph:'oh-BEE-chahm bahl-GAH-ree-yah',usage:'Say this and watch their faces light up'},
+      {en:'Beautiful country',bg:'Хубава страна',tr:'Hubava strana',ph:'hoo-BAH-vah strah-NAH',usage:''},
+      {en:'What would you personally recommend?',bg:'Какво ще препоръчаш?',tr:'Kakvo shte preporachash?',ph:'kahk-VOH shteh preh-poh-RAH-chahsh',usage:'Asking a local for their personal tips'},
+      {en:'Where should we go?',bg:'Накъде да отидем?',tr:'Nakade da otidem?',ph:'nah-KUH-deh dah oh-TEE-dem',usage:'Ask locals for nightlife or restaurant tips'},
+    ]},
+  ]
+},
+{
+  id:'shopping', icon:'🛍️', name:'Shopping',
+  desc:'Markets, stores, prices, haggling',
+  cats:[
+    { lbl:'In the Shop', items:[
+      {en:'I\'m looking for…',bg:'Търся…',tr:'Tarsya…',ph:'TUR-syah',usage:''},
+      {en:'Do you have…?',bg:'Имате ли…?',tr:'Imate li…?',ph:'EE-mah-teh lee',usage:''},
+      {en:'How much does it cost?',bg:'Колко струва?',tr:'Kolko struva?',ph:'KOL-koh STROO-vah',usage:''},
+      {en:'Too expensive',bg:'Твърде скъпо',tr:'Tvarde skapo',ph:'TVUR-deh SKUH-poh',usage:'Useful at markets'},
+      {en:'Cheaper, please',bg:'По-евтино, моля',tr:'Po-evtino, molya',ph:'poh-EV-tee-noh MOH-lyah',usage:''},
+      {en:'I\'ll take it',bg:'Взимам го',tr:'Vzimam go',ph:'VZEE-mahm goh',usage:''},
+      {en:'No thank you',bg:'Не, благодаря',tr:'Ne, blagodarya',ph:'neh blah-goh-dah-RYAH',usage:'Polite refusal'},
+      {en:'Just browsing',bg:'Само разглеждам',tr:'Samo razglezhdam',ph:'SAH-moh rahz-GLEZH-dahm',usage:'When a shopkeeper approaches'},
+      {en:'Can I try it on?',bg:'Мога ли да го пробвам?',tr:'Moga li da go probvam?',ph:'MOH-gah lee dah goh PROB-vahm',usage:'Clothing'},
+      {en:'Size',bg:'Размер',tr:'Razmer',ph:'rahz-MEHR',usage:''},
+      {en:'Large / Small',bg:'Голям / Малък',tr:'Golyam / Malak',ph:'goh-LYAM / MAH-luhk',usage:''},
+      {en:'A different colour?',bg:'Друг цвят?',tr:'Drug tsvyat?',ph:'drug tsvyaht',usage:''},
+      {en:'A receipt, please',bg:'Разписка, моля',tr:'Razpiska, molya',ph:'rahz-PEES-kah MOH-lyah',usage:''},
+    ]},
+    { lbl:'At the Market (Пазар)', items:[
+      {en:'Is it fresh?',bg:'Прясно ли е?',tr:'Pryasno li e?',ph:'PRYAZ-noh lee eh',usage:'At produce stalls'},
+      {en:'Give me one kilogram',bg:'Дайте ми един килограм',tr:'Dayte mi edin kilogram',ph:'DY-teh mee eh-DEEN kee-loh-GRAM',usage:''},
+      {en:'Half a kilogram',bg:'Половин килограм',tr:'Polovin kilogram',ph:'poh-loh-VEEN kee-loh-GRAM',usage:''},
+      {en:'Anything else?',bg:'Нещо друго?',tr:'Neshto drugo?',ph:'NESH-toh DROO-goh',usage:'Seller will often ask you this'},
+      {en:'That\'s all, thank you',bg:'Толкова, благодаря',tr:'Tolkova, blagodarya',ph:'tol-KOH-vah blah-goh-dah-RYAH',usage:''},
+    ]},
+  ]
+},
+{
+  id:'transport', icon:'🚇', name:'Getting Around',
+  desc:'Metro, buses, taxis, directions in Sofia',
+  cats:[
+    { lbl:'Directions', items:[
+      {en:'How do I get to…?',bg:'Как да стигна до…?',tr:'Kak da stigna do…?',ph:'kahk dah STEEG-nah doh',usage:''},
+      {en:'Left',bg:'Наляво',tr:'Nalyavo',ph:'nah-LYAH-voh',usage:''},
+      {en:'Right',bg:'Надясно',tr:'Nadyasno',ph:'nah-DYAZ-noh',usage:''},
+      {en:'Straight ahead',bg:'Направо',tr:'Napravo',ph:'nah-PRAH-voh',usage:''},
+      {en:'Back / Behind',bg:'Назад',tr:'Nazad',ph:'nah-ZAHD',usage:''},
+      {en:'Near / Far',bg:'Близо / Далеко',tr:'Blizo / Daleko',ph:'BLEE-zoh / dah-LEH-koh',usage:''},
+      {en:'Stop here, please',bg:'Спрете тук, моля',tr:'Sprete tuk, molya',ph:'SPREH-teh tuk MOH-lyah',usage:'Say this in a taxi'},
+      {en:'At the next stop',bg:'На следващата спирка',tr:'Na sledvashtata spirka',ph:'nah SLED-vahsh-tah-tah SPEER-kah',usage:''},
+    ]},
+    { lbl:'Transport', items:[
+      {en:'Metro (subway)',bg:'Метро',tr:'Metro',ph:'met-ROH',usage:'Sofia has 3 lines — fast and very cheap'},
+      {en:'Bus',bg:'Автобус',tr:'Avtobus',ph:'ahv-TOH-boos',usage:''},
+      {en:'Tram',bg:'Трамвай',tr:'Tramvay',ph:'trahm-VY',usage:''},
+      {en:'Taxi',bg:'Такси',tr:'Taksi',ph:'TAHK-see',usage:'Use OK Taxi or Yellow Taxi apps — avoid unmarked cabs'},
+      {en:'Airport',bg:'Летище',tr:'Letishte',ph:'LEH-tish-teh',usage:'Sofia Airport is Летище София'},
+      {en:'Central Train Station',bg:'Централна гара',tr:'Tsentralna gara',ph:'tsen-TRAHL-nah GAH-rah',usage:''},
+      {en:'The city centre',bg:'Центърът',tr:'Tsantarat',ph:'TSEN-tuh-ruht',usage:''},
+      {en:'A ticket, please',bg:'Билет, моля',tr:'Bilet, molya',ph:'bee-LET MOH-lyah',usage:'For bus / metro single rides'},
+      {en:'Two tickets, please',bg:'Два билета, моля',tr:'Dva bileta, molya',ph:'dvah bee-LEH-tah MOH-lyah',usage:''},
+    ]},
+    { lbl:'Key Sofia Landmarks', items:[
+      {en:'Alexander Nevsky Cathedral',bg:'Александър Невски',tr:'Aleksandar Nevski',ph:'ah-lek-SAN-dur NEV-skee',usage:'Most iconic Sofia landmark'},
+      {en:'Vitosha Boulevard (main pedestrian street)',bg:'Витоша булевард',tr:'Vitosha bulevard',ph:'vee-TOH-shah boo-leh-VARD',usage:'Main shopping & café street'},
+      {en:'Boris\'s Garden (central park)',bg:'Борисова градина',tr:'Borisova gradina',ph:'boh-ree-SOH-vah grah-DEE-nah',usage:'Huge park — great for walks'},
+      {en:'National History Museum',bg:'Национален исторически музей',tr:'Natsionalen istoricheski muzey',ph:'nah-tsee-oh-NAH-len ees-toh-REE-ches-kee moo-ZEY',usage:''},
+      {en:'National Theatre',bg:'Народният театър',tr:'Narodniyat teatar',ph:'nah-ROD-nee-yaht teh-AH-tur',usage:'Central landmark near the garden'},
+    ]},
+  ]
+},
+{
+  id:'numbers', icon:'🔢', name:'Numbers & Money',
+  desc:'Count, pay prices, tell the time',
+  isNumbers:true, cats:[]
+},
+{
+  id:'emergency', icon:'🆘', name:'Emergency & Health',
+  desc:'Safety phrases, pharmacy, medical help',
+  cats:[
+    { lbl:'Emergency', items:[
+      {en:'Help!',bg:'Помощ!',tr:'Pomosht!',ph:'poh-MOSHT',usage:'Shout it loudly. Emergency number: 112'},
+      {en:'Call an ambulance!',bg:'Обадете се на линейка!',tr:'Obadete se na lineyka!',ph:'oh-bah-DEH-teh seh nah lee-NEY-kah',usage:'112 — European emergency number'},
+      {en:'Police!',bg:'Полиция!',tr:'Politsiya!',ph:'poh-LEE-tsee-yah',usage:'Emergency: 112'},
+      {en:'Fire!',bg:'Пожар!',tr:'Pozhar!',ph:'poh-ZHAR',usage:''},
+      {en:'My bag was stolen',bg:'Откраднаха ми чантата',tr:'Otkradnakha mi chantata',ph:'oht-KRAD-nah-hah mee chan-TAH-tah',usage:''},
+      {en:'I lost my passport',bg:'Загубих паспорта си',tr:'Zagubikh pasporta si',ph:'zah-GOO-beekh pas-POR-tah see',usage:''},
+      {en:'I need help',bg:'Нужна ми е помощ',tr:'Nuzhna mi e pomosht',ph:'NOOZH-nah mee eh poh-MOSHT',usage:''},
+      {en:'I am sick (male)',bg:'Болен съм',tr:'Bolen sam',ph:'BOH-len suhm',usage:''},
+      {en:'I am sick (female)',bg:'Болна съм',tr:'Bolna sam',ph:'BOH-lnah suhm',usage:''},
+      {en:'I have an allergy to…',bg:'Имам алергия към…',tr:'Imam alergiya kam…',ph:'EE-mahm ah-lehr-GEE-yah kahm',usage:''},
+    ]},
+    { lbl:'Pharmacy & Health', items:[
+      {en:'Pharmacy',bg:'Аптека',tr:'Apteka',ph:'ap-TEH-kah',usage:'Green cross sign — open late in Sofia centre'},
+      {en:'Hospital',bg:'Болница',tr:'Bolnitsa',ph:'bol-NEE-tsah',usage:''},
+      {en:'Doctor',bg:'Лекар',tr:'Lekar',ph:'LEH-kar',usage:''},
+      {en:'Do you have painkillers?',bg:'Имате ли болкоуспокояващо?',tr:'Imate li bolkouspokoyvashto?',ph:'EE-mah-teh lee bol-koh-oos-poh-koh-YAH-vash-toh',usage:''},
+      {en:'Headache',bg:'Главоболие',tr:'Glavabolie',ph:'glah-voh-BOH-lee-eh',usage:''},
+      {en:'Stomach ache',bg:'Стомашни болки',tr:'Stomashni bolki',ph:'stoh-MAHSH-nee BOL-kee',usage:''},
+      {en:'Fever',bg:'Температура',tr:'Temperatura',ph:'tem-peh-rah-TOO-rah',usage:''},
+      {en:'Do I need a prescription?',bg:'Нужна ми е рецепта?',tr:'Nuzhna mi e retsepta?',ph:'NOOZH-nah mee eh reh-TSEP-tah',usage:''},
+    ]},
+  ]
+},
+{
+  id:'social', icon:'💬', name:'Social & Opinions',
+  desc:'Introductions, opinions, deeper conversation',
+  cats:[
+    { lbl:'About Yourself', items:[
+      {en:'My name is…',bg:'Казвам се…',tr:'Kazvam se…',ph:'KAZ-vahm seh',usage:'Say your name after се (seh)'},
+      {en:'What is your name?',bg:'Как се казвате?',tr:'Kak se kazvate?',ph:'kahk seh kahz-VAH-teh',usage:'Formal'},
+      {en:'Where are you from?',bg:'Откъде сте?',tr:'Otkade ste?',ph:'oht-KUH-deh steh',usage:''},
+      {en:'I am from…',bg:'Аз съм от…',tr:'Az sam ot…',ph:'ahz suhm oht',usage:''},
+      {en:'This is my first time here',bg:'За пръв път съм тук',tr:'Za prav pat sam tuk',ph:'zah pruv puht suhm tuk',usage:''},
+      {en:'I really like Bulgaria',bg:'Много ми харесва България',tr:'Mnogo mi haresva Balgariya',ph:'MNOH-goh mee hah-RES-vah bahl-GAH-ree-yah',usage:'Massive goodwill phrase'},
+      {en:'The food is incredible',bg:'Храната е невероятна',tr:'Hranata e neveroyatna',ph:'HRAH-nah-tah eh neh-veh-roh-YAHT-nah',usage:''},
+      {en:'Pleased to meet you',bg:'Радвам се да се запознаем',tr:'Radvam se da se zapoznaem',ph:'RAD-vahm seh dah seh zah-poz-NAH-ehm',usage:''},
+    ]},
+    { lbl:'Reactions & Opinions', items:[
+      {en:'Amazing! / Great!',bg:'Страхотно!',tr:'Strakhotno!',ph:'strah-HOT-noh',usage:'General positive exclamation'},
+      {en:'Very nice / Beautiful',bg:'Много хубаво',tr:'Mnogo khubavo',ph:'MNOH-goh hoo-BAH-voh',usage:''},
+      {en:'Interesting',bg:'Интересно',tr:'Interesno',ph:'een-teh-RES-noh',usage:''},
+      {en:'Really?',bg:'Наистина ли?',tr:'Naistina li?',ph:'nah-EES-tee-nah lee',usage:''},
+      {en:'I like it',bg:'Харесвам го',tr:'Kharésvam go',ph:'hah-RES-vahm goh',usage:''},
+      {en:'I don\'t like it',bg:'Не ми харесва',tr:'Ne mi kharesva',ph:'neh mee hah-RES-vah',usage:''},
+      {en:'Cheers! (toast)',bg:'Наздраве!',tr:'Nazdrave!',ph:'nahz-DRAH-veh',usage:'Eye contact when clinking — essential rule'},
+      {en:'See you later!',bg:'Ще се видим!',tr:'Shte se vidim!',ph:'shteh seh VEE-deem',usage:''},
+      {en:'It was a great pleasure',bg:'Беше ми много приятно',tr:'Beshe mi mnogo priyatno',ph:'BEH-sheh mee MNOH-goh pree-YAHT-noh',usage:'Warm farewell after meeting someone'},
+    ]},
+  ]
+},
 ];
 
 const DIALOGUES = [
-  {
-    icon:'☕',
-    title:'Ordering at a Café',
-    sub:'At a coffee shop on Vitosha Boulevard',
-    lines:[
-      {speaker:'Служител',you:false,bg:'Добър ден! Какво желаете?',tr:'Dobar den! Kakvo zhelaete?',en:'Good day! What would you like?'},
-      {speaker:'Вие (You)',you:true,bg:'Добър ден. Едно кафе и едно кашкавал, моля.',tr:'Dobar den. Edno kafe i edno kashkaval, molya.',en:'Good day. One coffee and one cheese toast, please.'},
-      {speaker:'Служител',you:false,bg:'Espresso или капучино?',tr:'Espresso ili kapuchino?',en:'Espresso or cappuccino?'},
-      {speaker:'Вие (You)',you:true,bg:'Капучино, моля.',tr:'Kapuchino, molya.',en:'Cappuccino, please.'},
-      {speaker:'Служител',you:false,bg:'Ще бъде веднага. Нещо друго?',tr:'Shte bade vednaga. Neshto drugo?',en:'It\'ll be right away. Anything else?'},
-      {speaker:'Вие (You)',you:true,bg:'Не, благодаря. Сметката заедно, моля.',tr:'Ne, blagodarya. Smetkata zaedno, molya.',en:'No, thank you. The bill together, please.'},
-    ]
-  },
-  {
-    icon:'🍺',
-    title:'At a Bulgarian Restaurant',
-    sub:'Ordering dinner with traditional dishes',
-    lines:[
-      {speaker:'Сервитьор',you:false,bg:'Добър вечер! Маса за колко?',tr:'Dobar vecher! Masa za kolko?',en:'Good evening! Table for how many?'},
-      {speaker:'Вие (You)',you:true,bg:'За двама, моля.',tr:'Za dvama, molya.',en:'For two, please.'},
-      {speaker:'Сервитьор',you:false,bg:'Заповядайте. Менюто.',tr:'Zapovaydayte. Menyuto.',en:'Here you are. The menu.'},
-      {speaker:'Вие (You)',you:true,bg:'Благодаря. Какво препоръчвате?',tr:'Blagodarya. Kakvo preporachvate?',en:'Thank you. What do you recommend?'},
-      {speaker:'Сервитьор',you:false,bg:'Шопската салата е много добра. И кебапчетата са страхотни.',tr:'Shopska salata e mnogo dobra. I kebapcheto sa strakhotni.',en:'The Shopska salad is very good. And the kebapche are great.'},
-      {speaker:'Вие (You)',you:true,bg:'Добре. Две шопски салати и две кебапчета, моля. И бира.',tr:'Dobre. Dve shopski salati i dve kebapcheta, molya. I bira.',en:'OK. Two Shopska salads and two kebapche, please. And beer.'},
-      {speaker:'Сервитьор',you:false,bg:'Наздраве! Приятен апетит!',tr:'Nazdrave! Priyaten apetit!',en:'Cheers! Enjoy your meal!'},
-      {speaker:'Вие (You)',you:true,bg:'Беше много вкусно. Сметката, моля.',tr:'Beshe mnogo vkusno. Smetkata, molya.',en:'It was very delicious. The bill, please.'},
-    ]
-  },
-  {
-    icon:'🛒',
-    title:'Shopping at a Market',
-    sub:'At the Women\'s Market (Женски пазар) in Sofia',
-    lines:[
-      {speaker:'Продавач',you:false,bg:'Заповядайте! Какво търсите?',tr:'Zapovaydayte! Kakvo tarsite?',en:'Come in! What are you looking for?'},
-      {speaker:'Вие (You)',you:true,bg:'Имате ли домати? Колко струват?',tr:'Imate li domati? Kolko struvat?',en:'Do you have tomatoes? How much are they?'},
-      {speaker:'Продавач',you:false,bg:'Два лева килограма. Много прясни.',tr:'Dva leva kilogram. Mnogo pryasni.',en:'Two leva per kilogram. Very fresh.'},
-      {speaker:'Вие (You)',you:true,bg:'Дайте ми един килограм, моля.',tr:'Dayte mi edin kilogram, molya.',en:'Give me one kilogram, please.'},
-      {speaker:'Продавач',you:false,bg:'Нещо друго?',tr:'Neshto drugo?',en:'Anything else?'},
-      {speaker:'Вие (You)',you:true,bg:'Да, половин килограм краставици.',tr:'Da, polovin kilogram krastavitsi.',en:'Yes, half a kilogram of cucumbers.'},
-      {speaker:'Продавач',you:false,bg:'Три лева общо.',tr:'Tri leva obshto.',en:'Three leva in total.'},
-      {speaker:'Вие (You)',you:true,bg:'Заповядайте. Благодаря!',tr:'Zapovaydayte. Blagodarya!',en:'Here you go. Thank you!'},
-    ]
-  },
-  {
-    icon:'🚕',
-    title:'Taking a Taxi',
-    sub:'Getting a taxi to Alexander Nevsky Cathedral',
-    lines:[
-      {speaker:'Вие (You)',you:true,bg:'Здравейте! До Александър Невски, моля.',tr:'Zdraveyte! Do Aleksandar Nevski, molya.',en:'Hello! To Alexander Nevsky, please.'},
-      {speaker:'Шофьор',you:false,bg:'Добре. Откъде сте?',tr:'Dobre. Otkade ste?',en:'OK. Where are you from?'},
-      {speaker:'Вие (You)',you:true,bg:'От Англия. Първи път съм в София.',tr:'Ot Angliya. Parvi pat sam v Sofiya.',en:'From England. First time in Sofia.'},
-      {speaker:'Шофьор',you:false,bg:'Добре дошли! София е красив град.',tr:'Dobre doshli! Sofiya e krasiv grad.',en:'Welcome! Sofia is a beautiful city.'},
-      {speaker:'Вие (You)',you:true,bg:'Да, много красиво. Колко струва?',tr:'Da, mnogo krasivo. Kolko struva?',en:'Yes, very beautiful. How much does it cost?'},
-      {speaker:'Шофьор',you:false,bg:'Около пет-шест лева.',tr:'Okolo pet-shest leva.',en:'About five-six leva.'},
-      {speaker:'Вие (You)',you:true,bg:'Спрете тук, моля. Вземете ресто.',tr:'Sprete tuk, molya. Vzemete resto.',en:'Stop here, please. Keep the change.'},
-      {speaker:'Шофьор',you:false,bg:'Мерси! Приятен престой!',tr:'Mersi! Priyaten prestoy!',en:'Thanks! Enjoy your stay!'},
-    ]
-  },
-  {
-    icon:'👋',
-    title:'Meeting a Local',
-    sub:'Making small talk — perhaps at a bar or park',
-    lines:[
-      {speaker:'Местен',you:false,bg:'Здравей! Туристи ли сте?',tr:'Zdravey! Turisti li ste?',en:'Hi! Are you tourists?'},
-      {speaker:'Вие (You)',you:true,bg:'Да. Казвам се [NAME]. Радвам се да се запознаем.',tr:'Da. Kazvam se [NAME]. Radvam se da se zapoznaem.',en:'Yes. My name is [NAME]. Pleased to meet you.'},
-      {speaker:'Местен',you:false,bg:'Аз се казвам Иван. Откъде сте?',tr:'Az se kazvam Ivan. Otkade ste?',en:'My name is Ivan. Where are you from?'},
-      {speaker:'Вие (You)',you:true,bg:'От Лондон. Много ми харесва София.',tr:'Ot London. Mnogo mi kharesva Sofiya.',en:'From London. I really like Sofia.'},
-      {speaker:'Местен',you:false,bg:'Страхотно! Говорите ли български?',tr:'Strakhotno! Govorite li balgarski?',en:'Great! Do you speak Bulgarian?'},
-      {speaker:'Вие (You)',you:true,bg:'Малко. Уча се.',tr:'Malko. Ucha se.',en:'A little. I\'m learning.'},
-      {speaker:'Местен',you:false,bg:'Много добре! Наздраве!',tr:'Mnogo dobre! Nazdrave!',en:'Very good! Cheers!'},
-      {speaker:'Вие (You)',you:true,bg:'Наздраве! За България!',tr:'Nazdrave! Za Balgariya!',en:'Cheers! To Bulgaria!'},
-    ]
-  },
+{
+  icon:'☕', title:'Ordering at a Café',
+  sub:'On Vitosha Boulevard — ordering coffee and a snack',
+  lines:[
+    {spk:'Staff',you:false,bg:'Добър ден! Какво желаете?',tr:'Dobar den! Kakvo zhelaete?',ph:'DOH-bar den! kahk-VOH zheh-lah-EH-teh',en:'Good day! What would you like?'},
+    {spk:'You',you:true,bg:'Добър ден. Едно кафе и едно кашкавал, моля.',tr:'Dobar den. Edno kafe i edno kashkaval, molya.',ph:'DOH-bar den. ED-noh kah-FEH ee ED-noh kahsh-kah-VAHL MOH-lyah',en:'Good day. One coffee and one cheese toast, please.'},
+    {spk:'Staff',you:false,bg:'Espresso или капучино?',tr:'Espresso ili kapuchino?',ph:'EE-lee kah-poo-CHEE-noh',en:'Espresso or cappuccino?'},
+    {spk:'You',you:true,bg:'Капучино, моля.',tr:'Kapuchino, molya.',ph:'kah-poo-CHEE-noh MOH-lyah',en:'Cappuccino, please.'},
+    {spk:'Staff',you:false,bg:'Ще бъде веднага. Нещо друго?',tr:'Shte bade vednaga. Neshto drugo?',ph:'shteh BUH-deh ved-NAH-gah. NESH-toh DROO-goh',en:'It\'ll be right away. Anything else?'},
+    {spk:'You',you:true,bg:'Не, благодаря. Сметката, моля.',tr:'Ne, blagodarya. Smetkata, molya.',ph:'neh blah-goh-dah-RYAH. SMET-kah-tah MOH-lyah',en:'No, thank you. The bill, please.'},
+    {spk:'Staff',you:false,bg:'Вземете ресто!',tr:'Vzemete resto!',ph:'vzeh-MEH-teh REHS-toh',en:'Keep the change!'},
+  ]
+},
+{
+  icon:'🍺', title:'Dinner at a Bulgarian Restaurant',
+  sub:'Ordering traditional dishes with local beer',
+  lines:[
+    {spk:'Waiter',you:false,bg:'Добър вечер! Маса за колко?',tr:'Dobar vecher! Masa za kolko?',ph:'DOH-bar VEH-cher! MAH-sah zah KOL-koh',en:'Good evening! Table for how many?'},
+    {spk:'You',you:true,bg:'За двама, моля.',tr:'Za dvama, molya.',ph:'zah DVAH-mah MOH-lyah',en:'For two, please.'},
+    {spk:'Waiter',you:false,bg:'Заповядайте. Менюто.',tr:'Zapovaydayte. Menyuto.',ph:'zah-poh-VYAH-dah-yteh. meh-NYOO-toh',en:'Here you are. The menu.'},
+    {spk:'You',you:true,bg:'Благодаря. Какво препоръчвате?',tr:'Blagodarya. Kakvo preporachvate?',ph:'blah-goh-dah-RYAH. kahk-VOH preh-poh-RUCH-vah-teh',en:'Thank you. What do you recommend?'},
+    {spk:'Waiter',you:false,bg:'Шопската салата е много добра. И кебапчетата са страхотни.',tr:'Shopska salata e mnogo dobra. I kebapcheto sa strakhotni.',ph:'SHOP-skah sah-LAH-tah eh MNOH-goh DOH-brah',en:'The Shopska salad is very good. And the kebapche are amazing.'},
+    {spk:'You',you:true,bg:'Добре. Две шопски салати и две кебапчета. И две бири, моля.',tr:'Dobre. Dve shopski salati i dve kebapcheta. I dve biri, molya.',ph:'DOH-breh. dveh SHOP-skee sah-LAH-tee ee dveh keh-BAHP-cheh-tah',en:'OK. Two Shopska salads and two kebapche. And two beers, please.'},
+    {spk:'Waiter',you:false,bg:'Наздраве! Приятен апетит!',tr:'Nazdrave! Priyaten apetit!',ph:'nahz-DRAH-veh! pree-YAH-ten ah-peh-TEET',en:'Cheers! Enjoy your meal!'},
+    {spk:'You',you:true,bg:'Беше много вкусно. Сметката, моля.',tr:'Beshe mnogo vkusno. Smetkata, molya.',ph:'BEH-sheh MNOH-goh VKOOS-noh. SMET-kah-tah MOH-lyah',en:'It was very delicious. The bill, please.'},
+  ]
+},
+{
+  icon:'🛒', title:'At the Women\'s Market',
+  sub:'Buying fruit and veg at Женски пазар',
+  lines:[
+    {spk:'Seller',you:false,bg:'Заповядайте! Какво търсите?',tr:'Zapovaydayte! Kakvo tarsite?',ph:'zah-poh-VYAH-dah-yteh! kahk-VOH TUR-see-teh',en:'Come! What are you looking for?'},
+    {spk:'You',you:true,bg:'Имате ли домати? Колко струват?',tr:'Imate li domati? Kolko struvat?',ph:'EE-mah-teh lee doh-MAH-tee? KOL-koh STROO-vaht',en:'Do you have tomatoes? How much are they?'},
+    {spk:'Seller',you:false,bg:'Два лева килограма. Много прясни.',tr:'Dva leva kilogram. Mnogo pryasni.',ph:'dvah LEH-vah kee-loh-GRAM. MNOH-goh PRYAZ-nee',en:'Two leva per kilo. Very fresh.'},
+    {spk:'You',you:true,bg:'Дайте ми един килограм, моля.',tr:'Dayte mi edin kilogram, molya.',ph:'DY-teh mee eh-DEEN kee-loh-GRAM MOH-lyah',en:'Give me one kilogram, please.'},
+    {spk:'Seller',you:false,bg:'Нещо друго?',tr:'Neshto drugo?',ph:'NESH-toh DROO-goh',en:'Anything else?'},
+    {spk:'You',you:true,bg:'Да, половин килограм краставици.',tr:'Da, polovin kilogram krastavitsi.',ph:'dah, poh-loh-VEEN kee-loh-GRAM krah-stah-VEE-tsee',en:'Yes, half a kilogram of cucumbers.'},
+    {spk:'Seller',you:false,bg:'Три лева общо.',tr:'Tri leva obshto.',ph:'tree LEH-vah OBH-shtoh',en:'Three leva in total.'},
+    {spk:'You',you:true,bg:'Заповядайте. Благодаря!',tr:'Zapovaydayte. Blagodarya!',ph:'zah-poh-VYAH-dah-yteh. blah-goh-dah-RYAH',en:'Here you go. Thank you!'},
+  ]
+},
+{
+  icon:'🚕', title:'Taking a Taxi',
+  sub:'Riding to Alexander Nevsky Cathedral',
+  lines:[
+    {spk:'You',you:true,bg:'Здравейте! До Александър Невски, моля.',tr:'Zdraveyte! Do Aleksandar Nevski, molya.',ph:'ZDRA-vay-teh! doh ah-lek-SAN-dur NEV-skee MOH-lyah',en:'Hello! To Alexander Nevsky, please.'},
+    {spk:'Driver',you:false,bg:'Добре. Откъде сте?',tr:'Dobre. Otkade ste?',ph:'DOH-breh. oht-KUH-deh steh',en:'OK. Where are you from?'},
+    {spk:'You',you:true,bg:'От Англия. Първи път съм в София.',tr:'Ot Angliya. Parvi pat sam v Sofiya.',ph:'oht ANG-lee-yah. PUR-vee puht suhm v soh-FEE-yah',en:'From England. First time in Sofia.'},
+    {spk:'Driver',you:false,bg:'Добре дошли! София е красив град.',tr:'Dobre doshli! Sofiya e krasiv grad.',ph:'DOH-breh dosh-LEE! soh-FEE-yah eh krah-SEEV grad',en:'Welcome! Sofia is a beautiful city.'},
+    {spk:'You',you:true,bg:'Много хубаво. Колко струва?',tr:'Mnogo hubavo. Kolko struva?',ph:'MNOH-goh hoo-BAH-voh. KOL-koh STROO-vah',en:'Very beautiful. How much will it be?'},
+    {spk:'Driver',you:false,bg:'Около пет-шест лева.',tr:'Okolo pet-shest leva.',ph:'OH-koh-loh pet-shest LEH-vah',en:'About five-six leva.'},
+    {spk:'You',you:true,bg:'Спрете тук, моля. Вземете ресто.',tr:'Sprete tuk, molya. Vzemete resto.',ph:'SPREH-teh tuk MOH-lyah. vzeh-MEH-teh REHS-toh',en:'Stop here, please. Keep the change.'},
+    {spk:'Driver',you:false,bg:'Мерси! Приятен престой!',tr:'Mersi! Priyaten prestoy!',ph:'MEHR-see! pree-YAH-ten pres-TOY',en:'Thanks! Enjoy your stay!'},
+  ]
+},
+{
+  icon:'🍻', title:'A Night Out with New Friends',
+  sub:'Meeting locals at a bar — casual real conversation',
+  lines:[
+    {spk:'Ivan (local)',you:false,bg:'Здравей! Туристи ли сте?',tr:'Zdravey! Turisti li ste?',ph:'zdra-VAY! too-REES-tee lee steh',en:'Hi! Are you tourists?'},
+    {spk:'You',you:true,bg:'Да. Казвам се [NAME]. Радвам се да се запознаем.',tr:'Da. Kazvam se [NAME]. Radvam se da se zapoznaem.',ph:'dah. KAZ-vahm seh. RAD-vahm seh dah seh zah-poz-NAH-ehm',en:'Yes. My name is [NAME]. Pleased to meet you.'},
+    {spk:'Ivan',you:false,bg:'Аз се казвам Иван. Какво правиш в София?',tr:'Az se kazvam Ivan. Kakvo pravish v Sofiya?',ph:'ahz seh KAZ-vahm ee-VAHN. kahk-VOH PRAH-veesh v soh-FEE-yah',en:'My name is Ivan. What are you doing in Sofia?'},
+    {spk:'You',you:true,bg:'Туризъм. Много ми харесва тук. Страхотен град!',tr:'Turizum. Mnogo mi haresva tuk. Strakhoten grad!',ph:'too-REE-zuhm. MNOH-goh mee hah-RES-vah tuk. strah-HOH-ten grad',en:'Tourism. I really like it here. Amazing city!'},
+    {spk:'Ivan',you:false,bg:'Страхотно! Говориш ли малко български?',tr:'Strakhotno! Govorish li malko balgarski?',ph:'strah-HOT-noh! goh-VOH-reesh lee MAHL-koh bal-GAHR-skee',en:'Amazing! Do you speak a little Bulgarian?'},
+    {spk:'You',you:true,bg:'Малко. Уча се. Хайде да пием нещо!',tr:'Malko. Ucha se. Hayde da piem neshto!',ph:'MAHL-koh. OO-chah seh. HY-deh dah PEE-ehm NESH-toh',en:'A little. I\'m learning. Come on, let\'s have a drink!'},
+    {spk:'Ivan',you:false,bg:'Давай! Следващата е моя!',tr:'Davay! Sledvashtata e moya!',ph:'dah-VY! SLED-vahsh-tah-tah eh MOH-yah',en:'Let\'s go! Next round is on me!'},
+    {spk:'You',you:true,bg:'Наздраве! За България!',tr:'Nazdrave! Za Balgariya!',ph:'nahz-DRAH-veh! zah bahl-GAH-ree-yah',en:'Cheers! To Bulgaria!'},
+    {spk:'Ivan',you:false,bg:'Наздраве! Обичам те, приятелю!',tr:'Nazdrave! Obicham te, priyatelyu!',ph:'nahz-DRAH-veh! oh-BEE-chahm teh pree-YAH-teh-lyoo',en:'Cheers! I love you, friend! (said warmly)'},
+  ]
+},
+{
+  icon:'⚽', title:'Football Chat',
+  sub:'Talking football — CSKA vs Levski — at a local bar',
+  lines:[
+    {spk:'You',you:true,bg:'Гледаш ли футбол?',tr:'Gledash li futbol?',ph:'GLEH-dahsh lee foot-BOL',en:'Do you watch football?'},
+    {spk:'Local',you:false,bg:'Разбира се! Аз съм от ЦСКА!',tr:'Razbirase! Az sam ot TSKA!',ph:'rahz-BEE-rah seh! ahz suhm oht TSEH-skah',en:'Of course! I\'m a CSKA fan!'},
+    {spk:'You',you:true,bg:'А Левски?',tr:'A Levski?',ph:'ah LEV-skee',en:'And Levski?'},
+    {spk:'Local',you:false,bg:'Стига! Много различни! ЦСКА е номер едно!',tr:'Stiga! Mnogo razlichni! TSKA e nomer edno!',ph:'STEE-gah! MNOH-goh rahz-LEECH-nee! TSEH-skah eh NOH-mer ED-noh',en:'Stop it! Very different! CSKA is number one!'},
+    {spk:'You',you:true,bg:'Ха-ха! Сериозно? Кога е следващият мач?',tr:'Ha-ha! Seriozno? Koga e sledvashtiyat mach?',ph:'seh-ree-OZ-noh? koh-GAH eh SLED-vahsh-tee-yaht mach',en:'Ha ha! Seriously? When is the next match?'},
+    {spk:'Local',you:false,bg:'В събота! Ще дойдеш ли?',tr:'V sabota! Shte doydesh li?',ph:'v suh-BOH-tah! shteh DOY-desh lee',en:'On Saturday! Will you come?'},
+    {spk:'You',you:true,bg:'Хайде! Яко!',tr:'Hayde! Yako!',ph:'HY-deh! YAH-koh',en:'Let\'s go! Cool!'},
+  ]
+},
 ];
 
-// ══════════════════════════════════════════════════════════════════════════════
-// STATE & STORAGE
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
 
-let progress = JSON.parse(localStorage.getItem('bg_progress') || '{}');
-let currentModule = null;
-let currentTab = 'list';
-let flashIdx = 0;
-let flashFlipped = false;
-let quizItems = [];
-let quizIdx = 0;
-let quizScore = 0;
-let quizAnswered = false;
-let speechSynth = window.speechSynthesis;
+let progress = JSON.parse(localStorage.getItem('bg2_prog') || '{}');
+let curMod = null, curTab = 'list';
+let fcItems = [], fcIdx = 0, fcFlipped = false;
+let qItems = [], qIdx = 0, qScore = 0, qAnswered = false;
+let synth = window.speechSynthesis;
 let bgVoice = null;
-let voiceReady = false;
-let currentUtterance = null;
+let curUtt = null;
 let activeBtns = new Set();
 
-function saveProgress() {
-  localStorage.setItem('bg_progress', JSON.stringify(progress));
-}
+function saveProgress(){ localStorage.setItem('bg2_prog', JSON.stringify(progress)); }
+function mark(key){ progress[key] = (progress[key]||0)+1; saveProgress(); updateHomeProgress(); }
+function getAllPhrases(){ return MODULES.filter(m=>!m.isNumbers).flatMap(m=>m.cats.flatMap(c=>c.items)); }
+function learnedCount(){ return Object.keys(progress).filter(k=>progress[k]>0).length; }
 
-function markLearned(phraseKey) {
-  progress[phraseKey] = (progress[phraseKey] || 0) + 1;
-  saveProgress();
-}
+// ═══════════════════════════════════════════════════════
+// VOICE / TTS
+// ═══════════════════════════════════════════════════════
 
-function getAllPhrases() {
-  const all = [];
-  MODULES.forEach(m => {
-    if (m.isNumbers) return;
-    m.categories.forEach(cat => {
-      cat.items.forEach(item => all.push(item));
-    });
-  });
-  return all;
-}
-
-function getLearnedCount() {
-  return Object.values(progress).filter(v => v > 0).length;
-}
-
-// ══════════════════════════════════════════════════════════════════════════════
-// TTS
-// ══════════════════════════════════════════════════════════════════════════════
-
-function initVoices() {
-  const voices = speechSynth.getVoices();
-  bgVoice = voices.find(v => v.lang === 'bg-BG' || v.lang === 'bg') || null;
-  updateVoiceUI();
-}
-
-function updateVoiceUI() {
-  const dot = document.getElementById('voice-dot');
-  const label = document.getElementById('voice-label');
-  if (!dot || !label) return;
-  if (bgVoice) {
-    dot.className = 'voice-dot';
-    label.textContent = `Bulgarian voice: ${bgVoice.name} — audio ready`;
+function initVoices(){
+  const voices = synth.getVoices();
+  bgVoice = voices.find(v=> /^bg/i.test(v.lang)) || null;
+  const dot = document.getElementById('v-dot');
+  const lbl = document.getElementById('v-label');
+  if(!dot) return;
+  if(bgVoice){
+    dot.className='voice-dot';
+    lbl.textContent=`Bulgarian voice ready: ${bgVoice.name}`;
   } else {
-    dot.className = 'voice-dot warn';
-    label.textContent = 'No Bulgarian voice found — use Chrome/Edge for best audio support';
+    dot.className='voice-dot warn';
+    lbl.textContent='No Bulgarian voice found — open in Chrome on Android for best audio';
   }
-  voiceReady = true;
 }
 
-speechSynth.onvoiceschanged = initVoices;
-initVoices();
+synth.onvoiceschanged = initVoices;
+setTimeout(initVoices, 400);
 
-function speak(text, btnEl) {
-  if (currentUtterance) {
-    speechSynth.cancel();
-    currentUtterance = null;
-  }
-  activeBtns.forEach(b => { b.textContent = '▶'; b.classList.remove('playing'); });
+function speak(text, btnEl){
+  synth.cancel(); curUtt=null;
+  activeBtns.forEach(b=>{ b.textContent='▶'; b.classList.remove('playing'); });
   activeBtns.clear();
-
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'bg-BG';
-  if (bgVoice) utt.voice = bgVoice;
-  utt.rate = 0.85;
-  utt.pitch = 1;
-
-  if (btnEl) {
-    btnEl.textContent = '■';
-    btnEl.classList.add('playing');
-    activeBtns.add(btnEl);
-    utt.onend = () => { btnEl.textContent = '▶'; btnEl.classList.remove('playing'); activeBtns.delete(btnEl); currentUtterance = null; };
-    utt.onerror = () => { btnEl.textContent = '▶'; btnEl.classList.remove('playing'); activeBtns.delete(btnEl); currentUtterance = null; };
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='bg-BG';
+  if(bgVoice) u.voice=bgVoice;
+  u.rate=0.82; u.pitch=1;
+  if(btnEl){
+    btnEl.textContent='■'; btnEl.classList.add('playing'); activeBtns.add(btnEl);
+    u.onend=()=>{ btnEl.textContent='▶'; btnEl.classList.remove('playing'); activeBtns.delete(btnEl); curUtt=null; };
+    u.onerror=()=>{ btnEl.textContent='▶'; btnEl.classList.remove('playing'); activeBtns.delete(btnEl); curUtt=null; };
   }
-  currentUtterance = utt;
-  speechSynth.speak(utt);
+  curUtt=u; synth.speak(u);
 }
 
-async function speakSequence(lines, delay = 1200) {
-  for (const line of lines) {
-    await new Promise(resolve => {
-      if (currentUtterance) speechSynth.cancel();
-      const utt = new SpeechSynthesisUtterance(line);
-      utt.lang = 'bg-BG';
-      if (bgVoice) utt.voice = bgVoice;
-      utt.rate = 0.85;
-      currentUtterance = utt;
-      utt.onend = () => { currentUtterance = null; setTimeout(resolve, delay); };
-      utt.onerror = () => { currentUtterance = null; resolve(); };
-      speechSynth.speak(utt);
+async function speakSeq(texts, gap=1100){
+  for(const t of texts){
+    await new Promise(res=>{
+      synth.cancel();
+      const u=new SpeechSynthesisUtterance(t);
+      u.lang='bg-BG'; if(bgVoice) u.voice=bgVoice; u.rate=0.82;
+      u.onend=()=>setTimeout(res,gap); u.onerror=()=>res();
+      curUtt=u; synth.speak(u);
     });
   }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // SCREENS
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if (speechSynth) speechSynth.cancel();
+  synth.cancel();
 }
 
-function showHome() {
-  showScreen('screen-home');
-  renderHome();
+function goHome(){ showScreen('s-home'); updateHomeProgress(); }
+
+function updateHomeProgress(){
+  const all=getAllPhrases(), total=all.length, n=learnedCount();
+  document.getElementById('pb').style.width=(total?Math.round(n/total*100):0)+'%';
+  document.getElementById('pb-n').textContent=n;
+  document.getElementById('pb-t').textContent=total;
 }
 
-function showModule(modId) {
-  const mod = MODULES.find(m => m.id === modId);
-  if (!mod) return;
-  currentModule = mod;
-  currentTab = 'list';
-  document.getElementById('module-nav-title').textContent = mod.name;
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===0));
-  showScreen('screen-module');
+// ═══════════════════════════════════════════════════════
+// HOME RENDER
+// ═══════════════════════════════════════════════════════
+
+function renderHome(){
+  const grid=document.getElementById('home-grid');
+  grid.innerHTML='';
+  const cards=[
+    ...MODULES.map(m=>({
+      icon:m.icon, name:m.name, desc:m.desc,
+      count: m.isNumbers ? NUMBERS.length+' numbers' : m.cats.reduce((a,c)=>a+c.items.length,0)+' phrases',
+      onclick:`openMod('${m.id}')`
+    })),
+    {icon:'🔡',name:'Cyrillic Alphabet',desc:'Learn to read Bulgarian script — tap any letter to hear it',count:ALPHABET.length+' letters',onclick:'openAlpha()'},
+    {icon:'🎭',name:'Real Dialogues',desc:'6 full conversations: café, restaurant, market, taxi, bar, football',count:DIALOGUES.length+' scenarios',onclick:'openDlg()'},
+  ];
+  cards.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='module-card'; d.setAttribute('onclick',c.onclick);
+    d.innerHTML=`<div class="module-icon">${c.icon}</div><div class="module-info"><div class="module-name">${c.name}</div><div class="module-desc">${c.desc}</div><div class="module-count">${c.count}</div></div>`;
+    grid.appendChild(d);
+  });
+  updateHomeProgress();
+}
+
+// ═══════════════════════════════════════════════════════
+// MODULE
+// ═══════════════════════════════════════════════════════
+
+function openMod(id){
+  curMod=MODULES.find(m=>m.id===id);
+  if(!curMod) return;
+  curTab='list';
+  document.getElementById('mod-title').textContent=curMod.name;
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',i===0));
+  showScreen('s-module');
   renderList();
 }
 
-function showAlphabet() {
-  showScreen('screen-alphabet');
-  renderAlphabet();
+function switchTab(tab,btn){
+  curTab=tab; synth.cancel();
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='list') renderList();
+  else if(tab==='flash') startFlash();
+  else if(tab==='quiz') startQuiz();
 }
 
-function showDialogues() {
-  showScreen('screen-dialogues');
-  renderDialogues();
-}
+// ── Browse ──
 
-// ══════════════════════════════════════════════════════════════════════════════
-// HOME
-// ══════════════════════════════════════════════════════════════════════════════
-
-function renderHome() {
-  const total = getAllPhrases().length;
-  const learned = getLearnedCount();
-  const pct = total ? Math.round((learned/total)*100) : 0;
-  document.getElementById('overall-progress-bar').style.width = pct+'%';
-  document.getElementById('overall-count').textContent = learned;
-  document.getElementById('overall-total').textContent = total;
-
-  const grid = document.getElementById('modules-grid');
-  grid.innerHTML = '';
-
-  // Regular modules
-  MODULES.forEach(mod => {
-    const count = mod.isNumbers ? NUMBERS.length + ' numbers' : mod.categories.reduce((a,c)=>a+c.items.length,0) + ' phrases';
-    const card = document.createElement('div');
-    card.className = 'module-card';
-    card.onclick = () => { if (mod.isNumbers) showModule(mod.id); else showModule(mod.id); };
-    card.innerHTML = `
-      <div class="module-icon">${mod.icon}</div>
-      <div class="module-info">
-        <div class="module-name">${mod.name}</div>
-        <div class="module-desc">${mod.desc}</div>
-        <div class="module-count">${count}</div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-
-  // Alphabet card
-  const alphaCard = document.createElement('div');
-  alphaCard.className = 'module-card';
-  alphaCard.onclick = showAlphabet;
-  alphaCard.innerHTML = `
-    <div class="module-icon">🔡</div>
-    <div class="module-info">
-      <div class="module-name">Cyrillic Alphabet</div>
-      <div class="module-desc">Learn to read Bulgarian script with audio</div>
-      <div class="module-count">${ALPHABET.length} letters</div>
-    </div>
-  `;
-  grid.appendChild(alphaCard);
-
-  // Dialogues card
-  const dlgCard = document.createElement('div');
-  dlgCard.className = 'module-card';
-  dlgCard.onclick = showDialogues;
-  dlgCard.innerHTML = `
-    <div class="module-icon">🎭</div>
-    <div class="module-info">
-      <div class="module-name">Real Dialogues</div>
-      <div class="module-desc">Full conversations: café, restaurant, taxi, market, meeting locals</div>
-      <div class="module-count">${DIALOGUES.length} scenarios</div>
-    </div>
-  `;
-  grid.appendChild(dlgCard);
-}
-
-// ══════════════════════════════════════════════════════════════════════════════
-// TABS
-// ══════════════════════════════════════════════════════════════════════════════
-
-function switchTab(tab, btnEl) {
-  currentTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btnEl.classList.add('active');
-  if (speechSynth) speechSynth.cancel();
-  if (tab === 'list') renderList();
-  else if (tab === 'flashcard') renderFlashcard();
-  else if (tab === 'quiz') renderQuiz();
-}
-
-// ══════════════════════════════════════════════════════════════════════════════
-// LIST VIEW
-// ══════════════════════════════════════════════════════════════════════════════
-
-function renderList() {
-  const el = document.getElementById('mode-content');
-  if (!currentModule) return;
-
-  if (currentModule.isNumbers) { renderNumbers(); return; }
-
-  let html = `<div class="phrase-list">`;
-  currentModule.categories.forEach(cat => {
-    html += `<div class="cat-label">${cat.label}</div>`;
-    cat.items.forEach(item => {
-      const key = item.bg;
-      const learned = progress[key] > 0;
-      html += `
-        <div class="phrase-item">
-          <div class="phrase-text-col">
-            <div class="phrase-cyrillic">${item.bg}</div>
-            <div class="phrase-translit">${item.tr}</div>
-            <div class="phrase-english">${item.en}</div>
-            ${item.usage ? `<div class="phrase-usage">💡 ${item.usage}</div>` : ''}
-          </div>
-          <button class="play-btn" onclick="speakPhrase('${escStr(item.bg)}',this)" title="Play audio">▶</button>
-        </div>`;
+function renderList(){
+  const el=document.getElementById('mod-content');
+  if(curMod.isNumbers){ renderNumbers(el); return; }
+  let h=`<div class="phrase-list">`;
+  curMod.cats.forEach(cat=>{
+    h+=`<div class="cat-label">${cat.lbl}</div>`;
+    cat.items.forEach(item=>{
+      h+=`<div class="phrase-card">
+        <div class="phrase-texts">
+          <div class="p-en">${esc(item.en)}</div>
+          <div class="p-bg">${esc(item.bg)}</div>
+          <div class="p-tr">${esc(item.tr)}</div>
+          <div class="p-ph">${esc(item.ph)}</div>
+          ${item.usage?`<div class="p-usage">${esc(item.usage)}</div>`:''}
+        </div>
+        <button class="play-btn" onclick="speak('${escJ(item.bg)}',this)" aria-label="Play audio">▶</button>
+      </div>`;
     });
   });
-  html += `</div>`;
-  el.innerHTML = html;
+  h+=`</div>`;
+  el.innerHTML=h;
 }
 
-function renderNumbers() {
-  const el = document.getElementById('mode-content');
-  let html = `
-    <div class="tips-box"><strong>Tip:</strong> Prices in Bulgaria use лев (lev) plural лева (leva). €1 ≈ 1.96 лева. Knowing numbers 1–20 and tens (20,30…100) covers 99% of transactions.</div>
-    <div class="numbers-grid">`;
-  NUMBERS.forEach(n => {
-    html += `
-      <div class="num-card" onclick="speak('${n.bg}')">
-        <div class="num-arabic">${n.n}</div>
-        <div class="num-info">
-          <div class="num-bg">${n.bg}</div>
-          <div class="num-tr">${n.tr}</div>
+function renderNumbers(el){
+  el.innerHTML=`
+    <div class="tip-box"><strong>Currency tip:</strong> Bulgaria uses лев (lev), plural лева (leva). €1 ≈ 1.96 лв. Knowing 1–20 and the tens covers almost every transaction.</div>
+    <div class="num-grid">
+      ${NUMBERS.map(n=>`
+        <div class="num-card" onclick="speak('${escJ(n.bg)}')">
+          <div class="num-n">${n.n}</div>
+          <div><div class="num-bg">${n.bg}</div><div class="num-tr">${n.tr}</div><div class="num-ph">${n.ph}</div></div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── Flashcard ──
+
+function getModItems(){
+  if(!curMod) return [];
+  if(curMod.isNumbers) return NUMBERS.map(n=>({en:String(n.n),bg:n.bg,tr:n.tr,ph:n.ph,usage:''}));
+  return curMod.cats.flatMap(c=>c.items);
+}
+
+function startFlash(){
+  fcItems=getModItems(); fcIdx=0; fcFlipped=false;
+  renderFC();
+}
+
+function renderFC(){
+  const el=document.getElementById('mod-content');
+  if(!fcItems.length){ el.innerHTML='<p style="color:var(--text3);text-align:center;padding:40px">No items.</p>'; return; }
+  const item=fcItems[fcIdx];
+  el.innerHTML=`
+    <div class="fc-wrap">
+      <div class="fc-counter">${fcIdx+1} / ${fcItems.length}</div>
+      <div class="fc" id="fc-card" onclick="flipFC()">
+        <div class="fc-hint" id="fc-hint">Tap to reveal</div>
+        <div id="fc-front">
+          <div class="fc-en">${esc(item.en)}</div>
+          <div style="color:var(--text3);font-size:.88rem;margin-top:8px">What is this in Bulgarian?</div>
         </div>
-      </div>`;
-  });
-  html += `</div>`;
-  el.innerHTML = html;
-}
-
-function escStr(s) { return s.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
-
-function speakPhrase(text, btn) { speak(text, btn); }
-
-// ══════════════════════════════════════════════════════════════════════════════
-// FLASHCARD
-// ══════════════════════════════════════════════════════════════════════════════
-
-function getModuleItems() {
-  if (!currentModule) return [];
-  if (currentModule.isNumbers) return NUMBERS.map(n => ({bg:n.bg, tr:n.tr, en:String(n.n), usage:''}));
-  return currentModule.categories.flatMap(c => c.items);
-}
-
-function renderFlashcard() {
-  const items = getModuleItems();
-  flashIdx = 0;
-  flashFlipped = false;
-  showFlashcard(items);
-}
-
-function showFlashcard(items) {
-  if (!items.length) { document.getElementById('mode-content').innerHTML = '<p style="color:var(--text3);text-align:center;padding:40px">No items in this module.</p>'; return; }
-  const item = items[flashIdx];
-  const el = document.getElementById('mode-content');
-
-  el.innerHTML = `
-    <div class="flashcard-container">
-      <div class="flashcard-counter">${flashIdx+1} / ${items.length}</div>
-      <div class="flashcard" id="fc" onclick="flipCard()">
-        <div class="flashcard-hint">Tap to reveal</div>
-        <div class="card-front">
-          <div class="card-cyrillic">${item.bg}</div>
-          <div style="color:var(--text3);font-size:0.9rem;margin-top:8px">Tap to see meaning</div>
-        </div>
-        <div class="card-back">
-          <div class="card-cyrillic">${item.bg}</div>
-          <div class="card-translit">${item.tr}</div>
-          <div class="card-english">${item.en}</div>
-          ${item.usage ? `<div class="card-usage">💡 ${item.usage}</div>` : ''}
-          <div class="card-audio-row">
-            <button class="card-play-btn" onclick="event.stopPropagation();speak('${escStr(item.bg)}')">▶ Play audio</button>
+        <div id="fc-back" style="display:none;width:100%">
+          <div class="fc-bg">${esc(item.bg)}</div>
+          <div class="fc-tr">${esc(item.tr)}</div>
+          <div class="fc-ph">${esc(item.ph)}</div>
+          ${item.usage?`<div class="fc-usage">${esc(item.usage)}</div>`:''}
+          <div class="fc-audio-row">
+            <button class="fc-audio-btn" onclick="event.stopPropagation();speak('${escJ(item.bg)}')">▶ Play audio</button>
           </div>
         </div>
       </div>
-      <div class="flashcard-nav">
-        <button class="fc-btn" onclick="fcNav(${JSON.stringify(items).replace(/</g,'&lt;')}, -1)">← Prev</button>
-        <button class="fc-btn primary" onclick="speak('${escStr(item.bg)}')">▶ Audio</button>
-        <button class="fc-btn" onclick="fcNav(items_ref, 1)">Next →</button>
+      <div class="fc-nav">
+        <button class="fc-btn" id="fc-prev" onclick="fcMove(-1)">← Prev</button>
+        <button class="fc-btn primary" onclick="speak('${escJ(item.bg)}')">▶ Audio</button>
+        <button class="fc-btn" id="fc-next" onclick="fcMove(1)">Next →</button>
       </div>
-      ${flashFlipped ? `
-      <div class="fc-rating">
-        <button class="rate-btn rate-hard" onclick="rateCard('hard')">😰 Hard</button>
-        <button class="rate-btn rate-ok" onclick="rateCard('ok')">😐 OK</button>
-        <button class="rate-btn rate-easy" onclick="rateCard('easy')">😊 Easy</button>
-      </div>` : ''}
+      <div class="fc-rate" id="fc-rate" style="display:none">
+        <button class="rate-btn r-hard" onclick="fcRate('hard')">😰 Hard</button>
+        <button class="rate-btn r-ok" onclick="fcRate('ok')">😐 OK</button>
+        <button class="rate-btn r-easy" onclick="fcRate('easy')">✓ Easy</button>
+      </div>
     </div>`;
-
-  // Store items on window for nav
-  window._fcItems = items;
-
-  // Fix nav buttons after render
-  el.querySelectorAll('.fc-btn').forEach((b,i) => {
-    if (i===0) b.onclick = () => fcNavW(-1);
-    if (i===1) b.onclick = () => speak(item.bg);
-    if (i===2) b.onclick = () => fcNavW(1);
-  });
 }
 
-function flipCard() {
-  flashFlipped = true;
-  const fc = document.getElementById('fc');
-  if (!fc) return;
-  fc.classList.add('flipped');
-  fc.querySelector('.flashcard-hint').textContent = 'Tap to flip back';
-  fc.onclick = () => {
-    fc.classList.remove('flipped');
-    fc.querySelector('.flashcard-hint').textContent = 'Tap to reveal';
-    flashFlipped = false;
-    fc.onclick = flipCard;
-    // Re-render to remove rating
-    showFlashcard(window._fcItems);
-  };
-  // Add rating buttons
-  const container = fc.parentElement;
-  const existing = container.querySelector('.fc-rating');
-  if (!existing) {
-    const rating = document.createElement('div');
-    rating.className = 'fc-rating';
-    rating.innerHTML = `
-      <button class="rate-btn rate-hard" onclick="rateCard('hard')">😰 Hard</button>
-      <button class="rate-btn rate-ok" onclick="rateCard('ok')">😐 OK</button>
-      <button class="rate-btn rate-easy" onclick="rateCard('easy')">😊 Easy</button>`;
-    container.appendChild(rating);
-  }
-  // Play automatically
-  speak(window._fcItems[flashIdx].bg);
+function flipFC(){
+  fcFlipped=true;
+  document.getElementById('fc-front').style.display='none';
+  document.getElementById('fc-back').style.display='block';
+  document.getElementById('fc-hint').textContent='Tap to flip back';
+  document.getElementById('fc-rate').style.display='flex';
+  document.getElementById('fc-card').onclick=unflipFC;
+  speak(fcItems[fcIdx].bg);
 }
 
-function fcNavW(dir) {
-  const items = window._fcItems;
-  flashIdx = (flashIdx + dir + items.length) % items.length;
-  flashFlipped = false;
-  showFlashcard(items);
+function unflipFC(){
+  fcFlipped=false;
+  document.getElementById('fc-front').style.display='block';
+  document.getElementById('fc-back').style.display='none';
+  document.getElementById('fc-hint').textContent='Tap to reveal';
+  document.getElementById('fc-rate').style.display='none';
+  document.getElementById('fc-card').onclick=flipFC;
 }
 
-function rateCard(rating) {
-  const item = window._fcItems[flashIdx];
-  markLearned(item.bg);
-  fcNavW(1);
+function fcMove(dir){
+  fcIdx=(fcIdx+dir+fcItems.length)%fcItems.length;
+  fcFlipped=false; synth.cancel();
+  renderFC();
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// QUIZ
-// ══════════════════════════════════════════════════════════════════════════════
-
-function renderQuiz() {
-  const items = getModuleItems();
-  if (items.length < 4) {
-    document.getElementById('mode-content').innerHTML = '<p style="color:var(--text3);text-align:center;padding:40px">Need at least 4 phrases for quiz.</p>';
-    return;
-  }
-  quizItems = shuffle([...items]).slice(0, Math.min(15, items.length));
-  quizIdx = 0;
-  quizScore = 0;
-  renderQuizQuestion();
+function fcRate(r){
+  if(r!=='hard') mark(fcItems[fcIdx].bg);
+  fcMove(1);
 }
 
-function renderQuizQuestion() {
-  const el = document.getElementById('mode-content');
-  if (quizIdx >= quizItems.length) { renderQuizComplete(); return; }
+// ── Quiz ──
 
-  const item = quizItems[quizIdx];
-  const all = getModuleItems();
-  const wrong = shuffle(all.filter(x => x.bg !== item.bg)).slice(0,3);
-  const opts = shuffle([item, ...wrong]);
-  const qType = quizIdx % 3; // 0=EN→BG, 1=BG→EN, 2=audio→BG
+function startQuiz(){
+  const all=getModItems();
+  if(all.length<4){ document.getElementById('mod-content').innerHTML='<p style="color:var(--text3);text-align:center;padding:40px">Need at least 4 phrases for quiz.</p>'; return; }
+  qItems=shuffle([...all]).slice(0,Math.min(15,all.length));
+  qIdx=0; qScore=0; qAnswered=false;
+  renderQ();
+}
 
-  let qHTML = '';
-  if (qType === 0) {
-    qHTML = `<div class="quiz-question-label">Choose the Bulgarian translation</div>
-             <div class="quiz-question">${item.en}</div>`;
-  } else if (qType === 1) {
-    qHTML = `<div class="quiz-question-label">What does this mean?</div>
-             <div class="quiz-question big">${item.bg}</div>
-             <div class="quiz-sub">${item.tr}</div>`;
+function renderQ(){
+  const el=document.getElementById('mod-content');
+  if(qIdx>=qItems.length){ renderQDone(el); return; }
+  const item=qItems[qIdx];
+  const all=getModItems();
+  const wrong=shuffle(all.filter(x=>x.bg!==item.bg)).slice(0,3);
+  const opts=shuffle([item,...wrong]);
+  const type=qIdx%3; // 0=EN→BG, 1=BG→EN, 2=listen→BG
+
+  let questionHTML='';
+  if(type===0){
+    questionHTML=`<div class="q-type-lbl">Choose the Bulgarian phrase</div>
+      <div class="q-en">${esc(item.en)}</div>`;
+  } else if(type===1){
+    questionHTML=`<div class="q-type-lbl">What does this mean in English?</div>
+      <div class="q-bg">${esc(item.bg)}</div>
+      <div class="q-tr">${esc(item.tr)}</div>
+      <div class="q-ph">${esc(item.ph)}</div>`;
   } else {
-    qHTML = `<div class="quiz-question-label">Listen and choose the phrase you hear</div>
-             <button class="quiz-audio-btn" onclick="speak('${escStr(item.bg)}')">▶ Play audio</button>`;
-    setTimeout(() => speak(item.bg), 300);
+    questionHTML=`<div class="q-type-lbl">Listen and choose the phrase you hear</div>
+      <button class="q-audio-btn" onclick="speak('${escJ(item.bg)}')">▶ Play audio</button>`;
+    setTimeout(()=>speak(item.bg),300);
   }
 
-  let optsHTML = opts.map(opt => {
-    const label = qType === 0 ? `${opt.bg}<br><em style="font-size:0.85rem;color:var(--text3)">${opt.tr}</em>` : (qType === 1 ? opt.en : `${opt.bg}<br><em style="font-size:0.85rem;color:var(--text3)">${opt.tr}</em>`);
-    return `<button class="opt-btn" onclick="answerQuiz('${escStr(opt.bg)}','${escStr(item.bg)}')">${label}</button>`;
+  const optsHTML=opts.map(o=>{
+    const lbl=type===1 ? esc(o.en) : `${esc(o.bg)}<br><em style="font-size:.82rem;color:var(--text3)">${esc(o.tr)}</em>`;
+    return `<button class="opt" data-bg="${escA(o.bg)}" onclick="answerQ('${escJ(o.bg)}','${escJ(item.bg)}')">${lbl}</button>`;
   }).join('');
 
-  el.innerHTML = `
-    <div class="quiz-container">
-      <div class="quiz-progress-row">
-        <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${(quizIdx/quizItems.length)*100}%"></div></div>
-        <div class="quiz-score">Score: ${quizScore}/${quizIdx}</div>
+  el.innerHTML=`
+    <div class="quiz-wrap">
+      <div class="quiz-top">
+        <div class="quiz-pb"><div class="quiz-pb-fill" style="width:${qIdx/qItems.length*100}%"></div></div>
+        <div class="quiz-score-lbl">${qScore}/${qIdx}</div>
       </div>
       <div class="quiz-card">
-        ${qHTML}
-        <div class="quiz-options">${optsHTML}</div>
-        <div id="quiz-feedback"></div>
+        ${questionHTML}
+        <div class="quiz-opts">${optsHTML}</div>
+        <div id="q-fb"></div>
       </div>
     </div>`;
 }
 
-function answerQuiz(chosen, correct) {
-  if (quizAnswered) return;
-  quizAnswered = true;
-  const isCorrect = chosen === correct;
-  if (isCorrect) quizScore++;
+function answerQ(chosen, correct){
+  if(qAnswered) return;
+  qAnswered=true;
+  const isOk=chosen===correct;
+  if(isOk){ qScore++; mark(correct); }
 
-  const btns = document.querySelectorAll('.opt-btn');
-  btns.forEach(b => {
-    b.disabled = true;
-    const onclick = b.getAttribute('onclick') || '';
-    if (onclick.includes(escStr(correct))) b.classList.add('correct');
-    if (!isCorrect && onclick.includes(escStr(chosen))) b.classList.add('wrong');
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    const bg=b.getAttribute('data-bg');
+    if(bg===correct) b.classList.add('correct');
+    else if(!isOk && bg===chosen) b.classList.add('wrong');
   });
 
-  if (isCorrect) markLearned(correct);
-  quizAnswered = true;
+  const correctItem=getModItems().find(x=>x.bg===correct);
+  const fb=document.getElementById('q-fb');
+  fb.className='quiz-fb '+(isOk?'ok':'no');
+  fb.innerHTML=isOk
+    ? `✓ Correct! &nbsp;<strong>${esc(correctItem?.bg)}</strong> = ${esc(correctItem?.en)}`
+    : `✗ Answer: &nbsp;<strong>${esc(correctItem?.bg)}</strong> (${esc(correctItem?.ph)}) = ${esc(correctItem?.en)}`;
 
-  const feedback = document.getElementById('quiz-feedback');
-  const correctItem = getModuleItems().find(x => x.bg === correct);
-  feedback.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'wrong');
-  feedback.innerHTML = isCorrect
-    ? `✓ Correct! <strong>${correctItem?.bg}</strong> = ${correctItem?.en}`
-    : `✗ It was: <strong>${correctItem?.bg}</strong> (${correctItem?.tr}) = ${correctItem?.en}`;
-
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'quiz-next-btn';
-  nextBtn.textContent = quizIdx+1 >= quizItems.length ? 'See Results →' : 'Next →';
-  nextBtn.onclick = () => { quizIdx++; renderQuizQuestion(); };
-  feedback.after(nextBtn);
+  const btn=document.createElement('button');
+  btn.className='quiz-next'; btn.textContent=qIdx+1>=qItems.length?'See Results →':'Next →';
+  btn.onclick=()=>{ qAnswered=false; qIdx++; renderQ(); };
+  fb.after(btn);
 }
 
-
-
-function renderQuizComplete() {
-  const el = document.getElementById('mode-content');
-  const pct = Math.round((quizScore/quizItems.length)*100);
-  const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '💪';
-  el.innerHTML = `
-    <div class="quiz-complete">
-      <div class="quiz-complete-emoji">${emoji}</div>
-      <div class="quiz-complete-score">${quizScore}/${quizItems.length}</div>
+function renderQDone(el){
+  const pct=Math.round(qScore/qItems.length*100);
+  const emoji=pct>=80?'🎉':pct>=60?'👍':'💪';
+  el.innerHTML=`
+    <div class="quiz-done">
+      <div class="quiz-done-emoji">${emoji}</div>
+      <div class="quiz-done-pct">${qScore}/${qItems.length}</div>
       <h2>${pct}% Correct</h2>
-      <p>${pct >= 80 ? 'Excellent! You\'re really getting it.' : pct >= 60 ? 'Good progress! Keep practising.' : 'Keep going — repetition is the key!'}</p>
-      <button class="quiz-next-btn" onclick="renderQuiz()" style="max-width:280px;margin:0 auto">Try Again</button>
+      <p>${pct>=80?'Excellent! You\'re getting it!':pct>=60?'Good progress — keep going!':'Repetition is the key — try again!'}</p>
+      <button class="quiz-next" style="max-width:260px;margin:0 auto" onclick="startQuiz()">Try Again</button>
     </div>`;
 }
 
-function shuffle(arr) { return [...arr].sort(() => Math.random()-0.5); }
-
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // ALPHABET
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 
-function renderAlphabet() {
-  const el = document.getElementById('alphabet-content');
-  let html = `
-    <div class="tips-box">
-      <strong>Reading tip:</strong> Bulgarian Cyrillic has 30 letters. Many look like Latin letters but sound different — В = V, Р = R, Н = N, С = S. Tap any letter to hear its sound.
+function openAlpha(){
+  showScreen('s-alpha');
+  const el=document.getElementById('alpha-content');
+  el.innerHTML=`
+    <div class="ph-legend">
+      <h4>How to read the pronunciation guide</h4>
+      <strong>CAPITAL letters</strong> = stressed syllable &nbsp;|&nbsp; <strong>-</strong> = syllable break<br>
+      <strong>ah</strong>=father &nbsp; <strong>ay</strong>=say &nbsp; <strong>ee</strong>=see &nbsp; <strong>oh</strong>=go &nbsp; <strong>oo</strong>=food &nbsp; <strong>uh</strong>=fun (the Ъ sound)<br>
+      <strong>zh</strong>=measure &nbsp; <strong>kh</strong>=loch &nbsp; <strong>ts</strong>=cats &nbsp; <strong>ch</strong>=church &nbsp; <strong>sh</strong>=shop
     </div>
-    <div class="alphabet-grid">`;
-  ALPHABET.forEach(l => {
-    html += `
-      <div class="letter-card" onclick="speak('${l.upper}')">
-        <div class="letter-bg">${l.upper}</div>
-        <div class="letter-sm">${l.lower}</div>
-        <div class="letter-sound">${l.sound}</div>
-        <div class="letter-example">${l.example}</div>
-      </div>`;
-  });
-  html += `</div>`;
-  el.innerHTML = html;
-}
-
-// ══════════════════════════════════════════════════════════════════════════════
-// DIALOGUES
-// ══════════════════════════════════════════════════════════════════════════════
-
-function renderDialogues() {
-  const el = document.getElementById('dialogues-content');
-  let html = `
-    <div class="tips-box">
-      <strong>How to use:</strong> Read each line aloud — your lines are highlighted in blue. Tap ▶ to hear any line. Use "Play All" to listen to the full conversation at natural speed.
+    <div class="alpha-grid">
+      ${ALPHABET.map(l=>`
+        <div class="alpha-card" onclick="speak('${l.U}')">
+          <div class="alpha-big">${l.U}</div>
+          <div class="alpha-small">${l.l}</div>
+          <div class="alpha-sound">${l.sound}</div>
+          <div class="alpha-ph">${l.ph}</div>
+          <div class="alpha-ex">${l.ex}</div>
+        </div>`).join('')}
     </div>`;
+}
 
-  DIALOGUES.forEach((dlg, di) => {
-    const linesHTML = dlg.lines.map((line, li) => `
-      <div class="dialogue-line ${line.you ? 'you' : ''}">
-        <div>
-          <div class="speaker-label">${line.speaker}</div>
-          <div class="dialogue-bubble">
-            <div class="bubble-cyrillic">${line.bg}</div>
-            <div class="bubble-translit">${line.tr}</div>
-            <div class="bubble-english">${line.en}</div>
-            <button class="bubble-audio" onclick="speak('${escStr(line.bg)}')">▶ Play</button>
+// ═══════════════════════════════════════════════════════
+// DIALOGUES
+// ═══════════════════════════════════════════════════════
+
+function openDlg(){
+  showScreen('s-dlg');
+  const el=document.getElementById('dlg-content');
+  el.innerHTML=`
+    <div class="tip-box"><strong>How to use:</strong> Your lines are in blue. Tap ▶ on any bubble to hear it. "Play full conversation" plays all lines in sequence — great for listening on Bluetooth headset while following along.</div>
+    ${DIALOGUES.map((d,i)=>`
+      <div class="dlg-scenario" id="dlg${i}">
+        <div class="dlg-header" onclick="toggleDlg(${i})">
+          <div class="dlg-icon">${d.icon}</div>
+          <div class="dlg-meta">
+            <div class="dlg-title">${esc(d.title)}</div>
+            <div class="dlg-sub">${esc(d.sub)}</div>
           </div>
+          <div class="dlg-chev">▼</div>
         </div>
-      </div>`).join('');
-
-    html += `
-      <div class="dialogue-scenario" id="dlg-${di}">
-        <div class="dialogue-header" onclick="toggleDialogue(${di})">
-          <div class="dialogue-icon">${dlg.icon}</div>
-          <div>
-            <div class="dialogue-title">${dlg.title}</div>
-            <div class="dialogue-sub">${dlg.sub}</div>
-          </div>
-          <div class="dialogue-chevron">▼</div>
+        <div class="dlg-body">
+          <button class="dlg-play-all" onclick="playDlg(${i})">▶ Play full conversation</button>
+          ${d.lines.map(line=>`
+            <div class="dlg-line ${line.you?'you':''}">
+              <div>
+                <div class="spk-lbl">${esc(line.spk)}</div>
+                <div class="bubble">
+                  <div class="b-bg">${esc(line.bg)}</div>
+                  <div class="b-tr">${esc(line.tr)}</div>
+                  <div class="b-ph">${esc(line.ph)}</div>
+                  <div class="b-en">${esc(line.en)}</div>
+                  <button class="b-play" onclick="speak('${escJ(line.bg)}')">▶ Play</button>
+                </div>
+              </div>
+            </div>`).join('')}
         </div>
-        <div class="dialogue-body">
-          <button class="dialogue-play-all" onclick="playDialogue(${di})">▶ Play full conversation</button>
-          ${linesHTML}
-        </div>
-      </div>`;
-  });
-
-  el.innerHTML = html;
+      </div>`).join('')}`;
 }
 
-function toggleDialogue(idx) {
-  const el = document.getElementById('dlg-'+idx);
-  el.classList.toggle('open');
+function toggleDlg(i){
+  document.getElementById('dlg'+i).classList.toggle('open');
 }
 
-function playDialogue(idx) {
-  const dlg = DIALOGUES[idx];
-  speakSequence(dlg.lines.map(l => l.bg), 800);
+function playDlg(i){
+  speakSeq(DIALOGUES[i].lines.map(l=>l.bg), 900);
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escJ(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+function escA(s){ return String(s||'').replace(/"/g,'&quot;'); }
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
+
+// ═══════════════════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 
 renderHome();
-setTimeout(initVoices, 500);
 </script>
 </body>
 </html>
