@@ -852,22 +852,36 @@ function learnedCount(){ return Object.keys(progress).filter(k=>progress[k]>0).l
 // ═══════════════════════════════════════════════════════
 
 function initVoices(){
-  const voices = synth.getVoices();
-  bgVoice = voices.find(v=> /^bg/i.test(v.lang)) || null;
   const dot = document.getElementById('v-dot');
   const lbl = document.getElementById('v-label');
-  if(!dot) return;
-  if(bgVoice){
-    dot.className='voice-dot';
-    lbl.textContent=`Bulgarian voice ready: ${bgVoice.name}`;
-  } else {
-    dot.className='voice-dot warn';
-    lbl.textContent='No Bulgarian voice found — open in Chrome on Android for best audio';
+  try {
+    const voices = synth ? synth.getVoices() : [];
+    if(!voices.length) return; // not loaded yet — wait for next retry or onvoiceschanged
+    bgVoice = voices.find(v=> /^bg/i.test(v.lang)) || null;
+    if(bgVoice){
+      if(dot) dot.className='voice-dot';
+      if(lbl) lbl.textContent=`Bulgarian voice ready: ${bgVoice.name}`;
+    } else {
+      if(dot) dot.className='voice-dot warn';
+      if(lbl) lbl.textContent='No Bulgarian voice found — open in Chrome on Android for best audio';
+    }
+  } catch(e){
+    if(dot) dot.className='voice-dot warn';
+    if(lbl) lbl.textContent='Audio ready — tap ▶ on any phrase to hear it';
   }
 }
 
-synth.onvoiceschanged = initVoices;
-setTimeout(initVoices, 400);
+if(synth) synth.onvoiceschanged = initVoices;
+setTimeout(initVoices, 500);
+setTimeout(initVoices, 1500);
+setTimeout(()=>{
+  const lbl = document.getElementById('v-label');
+  if(lbl && lbl.textContent.startsWith('Checking')){
+    const dot = document.getElementById('v-dot');
+    if(dot) dot.className='voice-dot warn';
+    lbl.textContent = 'Audio ready — tap ▶ on any phrase to hear it';
+  }
+}, 4000);
 
 function speak(text, btnEl){
   synth.cancel(); curUtt=null;
