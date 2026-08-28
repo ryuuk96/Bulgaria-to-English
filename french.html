@@ -284,7 +284,7 @@ nav{
   </div>
   <div class="voice-pill">
     <div class="voice-dot" id="v-dot"></div>
-    <span id="v-label">Checking French audio…</span>
+    <span id="v-label">Audio ready — tap ▶ on any phrase to hear it</span>
   </div>
   <div class="progress-card">
     <h3>Your Progress</h3>
@@ -776,38 +776,27 @@ function learnedCount(){ return Object.keys(progress).filter(k=>progress[k]>0).l
 // ═══════════════════════════════════════════════════════
 
 function initVoices(){
-  const dot = document.getElementById('v-dot');
-  const lbl = document.getElementById('v-label');
   try {
     const voices = synth ? synth.getVoices() : [];
-    if(!voices.length) return; // not loaded yet — wait for next retry or onvoiceschanged
+    if(!voices.length) return;
     frVoice = voices.find(v=> v.lang==='fr-FR') ||
               voices.find(v=> /^fr/i.test(v.lang)) || null;
+    const dot = document.getElementById('v-dot');
+    const lbl = document.getElementById('v-label');
     if(frVoice){
       if(dot) dot.className='voice-dot';
-      if(lbl) lbl.textContent=`French voice ready: ${frVoice.name}`;
-    } else {
-      if(dot) dot.className='voice-dot warn';
-      if(lbl) lbl.textContent='No French voice found — open in Chrome/Edge on Android for best audio';
+      if(lbl) lbl.textContent=`French voice: ${frVoice.name}`;
     }
-  } catch(e){
-    if(dot) dot.className='voice-dot warn';
-    if(lbl) lbl.textContent='Audio ready — tap ▶ on any phrase to hear it';
-  }
+  } catch(e){}
 }
 
-if(synth) synth.onvoiceschanged = initVoices;
-setTimeout(initVoices, 500);
-setTimeout(initVoices, 1500);
-// Hard fallback: if still "Checking" after 4s, just show ready
-setTimeout(()=>{
-  const lbl = document.getElementById('v-label');
-  if(lbl && lbl.textContent.startsWith('Checking')){
-    const dot = document.getElementById('v-dot');
-    if(dot) dot.className='voice-dot warn';
-    lbl.textContent = 'Audio ready — tap ▶ on any phrase to hear it';
-  }
-}, 4000);
+if(synth){
+  synth.addEventListener('voiceschanged', initVoices);
+  synth.onvoiceschanged = initVoices;
+}
+setTimeout(initVoices, 300);
+setTimeout(initVoices, 1000);
+setTimeout(initVoices, 2500);
 
 function speak(text, btnEl){
   synth.cancel(); curUtt=null;
@@ -1196,6 +1185,10 @@ function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
 // ═══════════════════════════════════════════════════════
 
 renderHome();
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
 </script>
 </body>
 </html>
